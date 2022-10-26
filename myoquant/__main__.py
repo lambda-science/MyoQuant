@@ -1,5 +1,6 @@
 import time
 import urllib.request
+import os
 from os import path
 from pathlib import Path
 
@@ -88,12 +89,18 @@ def sdh_analysis(
 
     if model_path is None:
         console.print("No SDH model provided, will download latest one.", style="blue")
-        if not path.exists("model.h5"):
+        model_path_abs = Path(os.path.abspath(__file__)).parents[0] / "model.h5"
+        if not path.exists(model_path_abs):
             urllib.request.urlretrieve(
-                "https://lbgi.fr/~meyer/SDH_models/model.h5", "model.h5"
+                "https://lbgi.fr/~meyer/SDH_models/model.h5",
+                model_path_abs,
             )
-        console.print("SDH Model have been downloaded !", style="blue")
-        model_path = "model.h5"
+
+        console.print(
+            f"SDH Model have been downloaded and is located at {model_path_abs}",
+            style="blue",
+        )
+        model_path = model_path_abs
     else:
         console.print(f"SDH Model used: {model_path}", style="blue")
 

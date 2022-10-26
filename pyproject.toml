@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "myoquant"
 version = "0.1.0"
-description = "Command line interface for my histology image quantification tools MyoQuant"
+description = "Command line interface (CLI) for MyoQuant, my histology image quantification tool."
 authors = ["Corentin Meyer <corentin.meyer@etu.unistra.fr>"]
 maintainers = ["Corentin Meyer <corentin.meyer@etu.unistra.fr>"]
 license = "AGPL-3.0-or-later"
