@@ -3,7 +3,14 @@
 MyoQuant command line tool to quantifying pathological feature in histology images.  
 It is built using CellPose, Stardist and custom models and image analysis techniques to automatically analyze myopathy histology images. An online demo with a web interface is availiable at [https://lbgi.fr/MyoQuant/](https://lbgi.fr/MyoQuant/).
 
+## **Warning:** This tool is still in alpha stage and might not work perfectly... yet.
+
 ## How to install
+
+### Installing from PyPi
+
+I am currently working on a PyPi release to do a simple `pip install myoquant` for installation.  
+You might try it it and see if it has been finally released !
 
 ### Installing from source
 
@@ -13,11 +20,6 @@ It is built using CellPose, Stardist and custom models and image analysis techni
 4. Install MyoQuant by using `pip install -e .`
 
 You are ready to go !
-
-### Installing from PyPi
-
-I am currently working on a PyPi release to do a simple `pip install myoquant` for installation.  
-You might try it it and see if it has been finally released !
 
 ## How to Use
 
