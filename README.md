@@ -3,13 +3,14 @@
 MyoQuant command line tool to quantifying pathological feature in histology images.  
 It is built using CellPose, Stardist and custom models and image analysis techniques to automatically analyze myopathy histology images. An online demo with a web interface is availiable at [https://lbgi.fr/MyoQuant/](https://lbgi.fr/MyoQuant/).
 
-## **Warning:** This tool is still in alpha stage and might not work perfectly... yet.
+### **Warning:** This tool is still in alpha stage and might not work perfectly... yet.
 
 ## How to install
 
 ### Installing from PyPi
 
-I am currently working on a PyPi release to do a simple `pip install myoquant` for installation.  
+I am currently working on a PyPi release.  
+You can simply install MyoQuant in a python environnement with a simple: `pip install myoquant`  
 You might try it it and see if it has been finally released !
 
 ### Installing from source
@@ -24,10 +25,12 @@ You are ready to go !
 ## How to Use
 
 To use the command-line tool, first activate your venv `source .venv/bin/activate`  
-Then you can perform SDH or HE analysis.
+Then you can perform SDH or HE analysis. You can use the command `myoquant --help` to list available commands.
 
-- **For SDH Image Analysis** run `python -m myoquant sdh_analysis IMAGE_PATH`. Don't forget to run `python -m myoquant sdh_analysis --help` for information about options.
-- **For HE Image Analysis** run `python -m myoquant he_analysis IMAGE_PATH`. Don't forget to run `python -m myoquant he_analysis --help` for information about options.
+- **For SDH Image Analysis** the command is: `myoquant sdh_analysis IMAGE_PATH`. Don't forget to run `myoquant sdh_analysis --help` for information about options.
+- **For HE Image Analysis** the command is: `myoquant he_analysis IMAGE_PATH`. Don't forget to run `myoquant he_analysis --help` for information about options.
+
+_If you're running into an issue such as `myoquant: command not found` please check if you activated your virtual environment with the package installed. And also you can try to run it with the full command: `python -m myoquant sdh_analysis --help`_
 
 For HE Staining analysis, you can download this sample image: [HERE](https://www.lbgi.fr/~meyer/SDH_models/sample_he.jpg)  
 For SDH Staining analysis, you can download this sample image: [HERE](https://www.lbgi.fr/~meyer/SDH_models/sample_sdh.jpg)
