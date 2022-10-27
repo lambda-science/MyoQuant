@@ -9,7 +9,7 @@ It is built using CellPose, Stardist and custom models and image analysis techni
 
 ### Installing from PyPi
 
-Using pip, you can simply install MyoQuant in a python environnement with a simple: `pip install myoquant`  
+Using pip, you can simply install MyoQuant in a python environnement with a simple: `pip install myoquant`
 
 ### Installing from source
 
@@ -34,15 +34,18 @@ Then you can perform SDH or HE analysis. You can use the command `myoquant --hel
 
 _If you're running into an issue such as `myoquant: command not found` please check if you activated your virtual environment with the package installed. And also you can try to run it with the full command: `python -m myoquant sdh_analysis --help`_
 
-## Examples  
+## Examples
+
 For HE Staining analysis, you can download this sample image: [HERE](https://www.lbgi.fr/~meyer/SDH_models/sample_he.jpg)  
 For SDH Staining analysis, you can download this sample image: [HERE](https://www.lbgi.fr/~meyer/SDH_models/sample_sdh.jpg)
 
-1. Example of successful SDH analysis with `myoquant sdh_analysis sample_sdh.jpg`
-![image](https://user-images.githubusercontent.com/20109584/198278737-24d69f61-058e-4a41-a463-68900a0dcbb6.png)  
+1. Example of successful SDH analysis with: `myoquant sdh_analysis sample_sdh.jpg`
 
-2. Example of successful HE analysis with `myoquant he_analysis sample_he.jpg`  
-![image](https://user-images.githubusercontent.com/20109584/198278766-afdf6260-171d-4f25-8a31-27b57256dedc.png)  
+![image](https://user-images.githubusercontent.com/20109584/198278737-24d69f61-058e-4a41-a463-68900a0dcbb6.png)
+
+2. Example of successful HE analysis with: `myoquant he_analysis sample_he.jpg`
+
+![image](https://user-images.githubusercontent.com/20109584/198280366-1cb424f5-50af-45f9-99d1-34e191fb2e20.png)
 
 ## Who and how
 
