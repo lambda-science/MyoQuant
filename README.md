@@ -1,7 +1,7 @@
 # MyoQuant
 
-MyoQuant command line tool to quantifying pathological feature in histology images.  
-It is built using CellPose, Stardist and custom models and image analysis techniques to automatically analyze myopathy histology images. An online demo with a web interface is availiable at [https://lbgi.fr/MyoQuant/](https://lbgi.fr/MyoQuant/).
+MyoQuant is a command line tool to quantify pathological feature in histology images.  
+It is built using CellPose, Stardist, custom neural-network models and image analysis techniques to automatically analyze myopathy histology images. An online demo with a web interface is available at [https://lbgi.fr/MyoQuant/](https://lbgi.fr/MyoQuant/).
 
 ### **Warning:** This tool is still in alpha stage and might not work perfectly... yet.
 
@@ -9,12 +9,12 @@ It is built using CellPose, Stardist and custom models and image analysis techni
 
 ### Installing from PyPi
 
-Using pip, you can simply install MyoQuant in a python environnement with a simple: `pip install myoquant`
+Using pip, you can simply install MyoQuant in a python environment with a simple: `pip install myoquant`
 
 ### Installing from source
 
 1. Clone this repository using `git clone https://github.com/lambda-science/MyoQuant.git`
-2. Create a virtual environnement by using `python -m venv .venv`
+2. Create a virtual environment by using `python -m venv .venv`
 3. Activate the venv by using `source .venv/bin/activate`
 4. Install MyoQuant by using `pip install -e .`
 
@@ -52,7 +52,7 @@ For SDH Staining analysis, you can download this sample image: [HERE](https://ww
 - Creator and Maintainer: [Corentin Meyer, 3rd year PhD Student in the CSTB Team, ICube — CNRS — Unistra](https://lambda-science.github.io/)
 - The source code for this application is available [HERE](https://github.com/lambda-science/MyoQuant)
 
-## Advanced informations
+## Advanced information
 
 For the SDH Analysis our custom model will be downloaded and placed inside the myoquant package directory. You can also download it manually here: [https://lbgi.fr/~meyer/SDH_models/model.h5](https://lbgi.fr/~meyer/SDH_models/model.h5) and then you can place it in the directory of your choice and provide the path to the model file using:  
 `myoquant sdh_analysis IMAGE_PATH --model_path /path/to/model.h5`
