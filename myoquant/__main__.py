@@ -1,6 +1,6 @@
+import os
 import time
 import urllib.request
-import os
 from os import path
 from pathlib import Path
 
