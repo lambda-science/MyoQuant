@@ -1,6 +1,6 @@
 # MyoQuant🔬
 
-MyoQuant is a command line tool to quantify pathological feature in histology images.  
+MyoQuant🔬 is a command line tool to quantify pathological feature in histology images.  
 It is built using CellPose, Stardist, custom neural-network models and image analysis techniques to automatically analyze myopathy histology images. An online demo with a web interface is available at [https://lbgi.fr/MyoQuant/](https://lbgi.fr/MyoQuant/).
 
 ### **Warning:** This tool is still in alpha stage and might not work perfectly... yet.
