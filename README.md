@@ -16,7 +16,7 @@ An online demo with a web interface is available at [https://lbgi.fr/MyoQuant/](
 ## How to install
 
 ### Installing from PyPi (Preferred)
-**MyoQuant package is officially available on PyPi (pip) repository. ![https://pypi.org/project/myoquant/](https://pypi.org/project/myoquant/) ![Pypi verison](https://img.shields.io/pypi/v/myoquant)** 
+**MyoQuant package is officially available on PyPi (pip) repository. [https://pypi.org/project/myoquant/](https://pypi.org/project/myoquant/) ![Pypi verison](https://img.shields.io/pypi/v/myoquant)** 
 
 Using pip, you can simply install MyoQuant in a python environment with a simple: `pip install myoquant`
 
