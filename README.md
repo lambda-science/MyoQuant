@@ -1,30 +1,35 @@
 ![Twitter Follow](https://img.shields.io/twitter/follow/corentinm_py?style=social) ![Demo Version](https://img.shields.io/badge/Demo-https%3A%2F%2Flbgi.fr%2FMyoQuant%2F-9cf) ![PyPi](https://img.shields.io/badge/PyPi-https%3A%2F%2Fpypi.org%2Fproject%2Fmyoquant%2F-blueviolet) ![Pypi verison](https://img.shields.io/pypi/v/myoquant) ![PyPi Python Version](https://img.shields.io/pypi/pyversions/myoquant) ![PyPi Format](https://img.shields.io/pypi/format/myoquant) ![GitHub last commit](https://img.shields.io/github/last-commit/lambda-science/MyoQuant) ![GitHub](https://img.shields.io/github/license/lambda-science/MyoQuant) 
 
-# MyoQuant🔬
+# MyoQuant🔬: a tool to automatically quantify pathological features in muscle fiber histology images
 
-MyoQuant🔬 is a command line tool to quantify pathological feature in histology images.  
-It is built using CellPose, Stardist, custom neural-network models and image analysis techniques to automatically analyze myopathy histology images. An online demo with a web interface is available at [https://lbgi.fr/MyoQuant/](https://lbgi.fr/MyoQuant/).
+<p align="center">
+  <img src="https://i.imgur.com/mzALgZL.png" alt="IMPatienT Banner" style="border-radius: 25px;" />
+</p>
 
-### **Warning:** This tool is still in alpha stage and might not work perfectly... yet.
+MyoQuant🔬 is a command line tool to automatically quantify pathological features in muscle fiber histology images.  
+It is built using CellPose, Stardist, custom neural-network models and image analysis techniques to automatically analyze myopathy histology images. Currently MyoQuant is capable of quantifying centralisation of nuclei in muscle fiber with HE stainning and anomaly in the mithochondria distribution in muscle fibers with SDH stainning.  
+
+An online demo with a web interface is available at [https://lbgi.fr/MyoQuant/](https://lbgi.fr/MyoQuant/). This project is free and open-source under the AGPL license, feel free to fork and contribute to the development. 
+
+#### *Warning: This tool is still in early phases and active developpement.*
 
 ## How to install
 
-### Installing from PyPi
+### Installing from PyPi (Preferred)
+**MyoQuant package is officially avaliable on PyPi (pip) repository. ![https://pypi.org/project/myoquant/](https://pypi.org/project/myoquant/) ![Pypi verison](https://img.shields.io/pypi/v/myoquant)** 
 
 Using pip, you can simply install MyoQuant in a python environment with a simple: `pip install myoquant`
 
-### Installing from source
+### Installing from source (Developers)
 
 1. Clone this repository using `git clone https://github.com/lambda-science/MyoQuant.git`
 2. Create a virtual environment by using `python -m venv .venv`
 3. Activate the venv by using `source .venv/bin/activate`
 4. Install MyoQuant by using `pip install -e .`
 
-You are ready to go !
-
 ## How to Use
 
-To use the command-line tool, first activate your venv `source .venv/bin/activate`  
+To use the command-line tool, first activate your venv in which MyoQuant is installed: `source .venv/bin/activate`  
 Then you can perform SDH or HE analysis. You can use the command `myoquant --help` to list available commands.
 
 - **For SDH Image Analysis** the command is:  
@@ -35,6 +40,12 @@ Then you can perform SDH or HE analysis. You can use the command `myoquant --hel
    Don't forget to run `myoquant he-analysis --help` for information about options.
 
 _If you're running into an issue such as `myoquant: command not found` please check if you activated your virtual environment with the package installed. And also you can try to run it with the full command: `python -m myoquant sdh-analysis --help`_
+
+## Contact
+Creator and Maintainer: [**Corentin Meyer**, 3rd year PhD Student in the CSTB Team, ICube — CNRS — Unistra](https://lambda-science.github.io/)  <corentin.meyer@etu.unistra.fr>
+
+## Citing MyoQuant🔬
+[placeholder]  
 
 ## Examples
 
@@ -48,11 +59,6 @@ For SDH Staining analysis, you can download this sample image: [HERE](https://ww
 2. Example of successful HE analysis with: `myoquant he_analysis sample_he.jpg`
 
 ![image](https://user-images.githubusercontent.com/20109584/198280366-1cb424f5-50af-45f9-99d1-34e191fb2e20.png)
-
-## Who and how
-
-- Creator and Maintainer: [Corentin Meyer, 3rd year PhD Student in the CSTB Team, ICube — CNRS — Unistra](https://lambda-science.github.io/)
-- The source code for this application is available [HERE](https://github.com/lambda-science/MyoQuant)
 
 ## Advanced information
 
