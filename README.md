@@ -28,13 +28,13 @@ To use the command-line tool, first activate your venv `source .venv/bin/activat
 Then you can perform SDH or HE analysis. You can use the command `myoquant --help` to list available commands.
 
 - **For SDH Image Analysis** the command is:  
-  `myoquant sdh_analysis IMAGE_PATH`  
-  Don't forget to run `myoquant sdh_analysis --help` for information about options.
+  `myoquant sdh-analysis IMAGE_PATH`  
+  Don't forget to run `myoquant sdh-analysis --help` for information about options.
 - **For HE Image Analysis** the command is:  
-  `myoquant he_analysis IMAGE_PATH`  
-   Don't forget to run `myoquant he_analysis --help` for information about options.
+  `myoquant he-analysis IMAGE_PATH`  
+   Don't forget to run `myoquant he-analysis --help` for information about options.
 
-_If you're running into an issue such as `myoquant: command not found` please check if you activated your virtual environment with the package installed. And also you can try to run it with the full command: `python -m myoquant sdh_analysis --help`_
+_If you're running into an issue such as `myoquant: command not found` please check if you activated your virtual environment with the package installed. And also you can try to run it with the full command: `python -m myoquant sdh-analysis --help`_
 
 ## Examples
 
@@ -57,4 +57,4 @@ For SDH Staining analysis, you can download this sample image: [HERE](https://ww
 ## Advanced information
 
 For the SDH Analysis our custom model will be downloaded and placed inside the myoquant package directory. You can also download it manually here: [https://lbgi.fr/~meyer/SDH_models/model.h5](https://lbgi.fr/~meyer/SDH_models/model.h5) and then you can place it in the directory of your choice and provide the path to the model file using:  
-`myoquant sdh_analysis IMAGE_PATH --model_path /path/to/model.h5`
+`myoquant sdh-analysis IMAGE_PATH --model_path /path/to/model.h5`
