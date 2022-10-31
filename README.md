@@ -52,11 +52,11 @@ Creator and Maintainer: [**Corentin Meyer**, 3rd year PhD Student in the CSTB Te
 For HE Staining analysis, you can download this sample image: [HERE](https://www.lbgi.fr/~meyer/SDH_models/sample_he.jpg)  
 For SDH Staining analysis, you can download this sample image: [HERE](https://www.lbgi.fr/~meyer/SDH_models/sample_sdh.jpg)
 
-1. Example of successful SDH analysis with: `myoquant sdh_analysis sample_sdh.jpg`
+1. Example of successful SDH analysis with: `myoquant sdh-analysis sample_sdh.jpg`
 
 ![image](https://user-images.githubusercontent.com/20109584/198278737-24d69f61-058e-4a41-a463-68900a0dcbb6.png)
 
-2. Example of successful HE analysis with: `myoquant he_analysis sample_he.jpg`
+2. Example of successful HE analysis with: `myoquant he-analysis sample_he.jpg`
 
 ![image](https://user-images.githubusercontent.com/20109584/198280366-1cb424f5-50af-45f9-99d1-34e191fb2e20.png)
 
