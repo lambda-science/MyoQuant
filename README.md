@@ -42,7 +42,7 @@ Then you can perform SDH or HE analysis. You can use the command `myoquant --hel
 _If you're running into an issue such as `myoquant: command not found` please check if you activated your virtual environment with the package installed. And also you can try to run it with the full command: `python -m myoquant sdh-analysis --help`_
 
 ## Contact
-Creator and Maintainer: [**Corentin Meyer**, 3rd year PhD Student in the CSTB Team, ICube — CNRS — Unistra](https://lambda-science.github.io/)  <corentin.meyer@etu.unistra.fr>
+Creator and Maintainer: [**Corentin Meyer**, 3rd year PhD Student in the CSTB Team, ICube — CNRS — Unistra](https://cmeyer.fr)  <corentin.meyer@etu.unistra.fr>
 
 ## Citing MyoQuant🔬
 [placeholder]  
