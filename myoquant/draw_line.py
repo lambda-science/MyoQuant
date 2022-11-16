@@ -1,6 +1,17 @@
+import math
+
+
 def line_equation(x1, y1, x2, y2):
-    m = (y2 - y1) / (x2 - x1)
+    # Poor man's handling of the case where the equation is infinite
+    if x2 - x1 == 0 and y2 > y1:
+        m = 9999
+    elif x2 - x1 == 0 and y1 > y2:
+        m = -9999
+    else:
+        m = (y2 - y1) / (x2 - x1)
     b = y1 - m * x1
+    if math.isinf(m) or math.isinf(b):
+        raise ValueError("Line equation is infinite")
     return m, b
 
 
@@ -16,6 +27,8 @@ def calculate_intersection(m, b, image_dim=(256, 256)):
         intersect = (i - b) / m
         if intersect >= 0 and intersect < image_dim[1]:
             results.append((intersect, i))
+    if results == []:
+        raise ValueError("No intersection found")
     return results
 
 

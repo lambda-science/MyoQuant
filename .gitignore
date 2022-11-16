@@ -165,3 +165,4 @@ pid
 *.csv
 *.png
 *.tif
+debug_data/

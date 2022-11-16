@@ -48,6 +48,12 @@ def single_cell_analysis(
     for _, value in df_nuc_single.iterrows():
         n_nuc += 1
         # Extend line and find closest point
+
+        # Handling of the case where the nucleus is at the exact center of the fiber
+        if x_fiber == value[3] and y_fiber == value[2]:
+            n_nuc_intern += 1
+            continue
+
         m, b = line_equation(x_fiber, y_fiber, value[3], value[2])
 
         intersections_lst = calculate_intersection(
