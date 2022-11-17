@@ -76,7 +76,7 @@ def single_cell_analysis(
                         x_fiber, y_fiber, coords[1], coords[0]
                     )
                     ratio_dist = dist_nuc_cent / dist_out_of_fiber
-                    if ratio_dist < internalised_threshold:
+                    if ratio_dist <= internalised_threshold:
                         n_nuc_intern += 1
                     else:
                         n_nuc_periph += 1
@@ -111,7 +111,12 @@ def predict_all_cells(
         x_fiber = cellpose_df.iloc[index, 3] - cellpose_df.iloc[index, 6]
         y_fiber = cellpose_df.iloc[index, 2] - cellpose_df.iloc[index, 5]
         n_nuc, n_nuc_intern, n_nuc_periph = single_cell_analysis(
-            single_cell_img, single_cell_mask, df_nuc_single, x_fiber, y_fiber
+            single_cell_img,
+            single_cell_mask,
+            df_nuc_single,
+            x_fiber,
+            y_fiber,
+            internalised_threshold,
         )
         list_n_nuc.append(n_nuc)
         list_n_nuc_intern.append(n_nuc_intern)
@@ -154,7 +159,9 @@ def run_he_analysis(image_ndarray, mask_cellpose, mask_stardist, eccentricity_th
         ],
     )
     df_cellpose = pd.DataFrame(props_cellpose)
-    df_nuc_analysis = predict_all_cells(image_ndarray, df_cellpose, mask_stardist)
+    df_nuc_analysis = predict_all_cells(
+        image_ndarray, df_cellpose, mask_stardist, eccentricity_thresh
+    )
 
     # Result table dict
     headers = ["Feature", "Raw Count", "Proportion (%)"]

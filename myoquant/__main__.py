@@ -190,16 +190,16 @@ def he_analysis(
         help="Approximative single cell diameter in pixel for CellPose detection. If not specified, Cellpose will try to deduce it.",
     ),
     nms_thresh: float = typer.Option(
-        0.4,
-        help="NMS Threshold for Stardist nuclei detection.",
+        0.4, help="NMS Threshold for Stardist nuclei detection.", min=0, max=1
     ),
     prob_thresh: float = typer.Option(
-        0.5,
-        help="Probability Threshold for Stardist nuclei detection.",
+        0.5, help="Probability Threshold for Stardist nuclei detection.", min=0.5, max=1
     ),
     eccentricity_thresh: float = typer.Option(
         0.75,
-        help="Eccentricity threshold value for a nuclei to be considered as internalized during nuclei classification.",
+        help="Eccentricity threshold value for a nuclei to be considered as internalized during nuclei classification. When very close to 1 almost all nuclei are considered as internalized.",
+        min=0,
+        max=1,
     ),
 ):
     """Run the HE analysis and quantification on the image."""
