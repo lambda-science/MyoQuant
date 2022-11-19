@@ -168,3 +168,4 @@ debug_data/
 !binary_mask_fluo.tif
 !nuclei.tif
 !cytoplasm.tif
+!binary_mask_sdh.tif

@@ -32,8 +32,11 @@ def load_cellpose():
     return model_c
 
 
-def load_stardist():
-    model_s = StarDist2D.from_pretrained("2D_versatile_he")
+def load_stardist(fluo=False):
+    if fluo:
+        model_s = StarDist2D.from_pretrained("2D_versatile_fluo")
+    else:
+        model_s = StarDist2D.from_pretrained("2D_versatile_he")
     return model_s
 
 

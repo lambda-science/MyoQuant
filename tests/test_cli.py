@@ -7,16 +7,49 @@ runner = CliRunner()
 
 def test_sdh_analysis():
     result = runner.invoke(
-        app, ["sdh-analysis", "sample_img/sample_sdh.jpg", "--cellpose-diameter", 80]
+        app,
+        [
+            "sdh-analysis",
+            "sample_img/sample_sdh.jpg",
+            "--cellpose-diameter",
+            80,
+            "--mask-path",
+            "sample_img/binary_mask_sdh.tif",
+        ],
     )
     assert result.exit_code == 0
     assert "Analysis completed !" in result.stdout
 
 
 def test_he_analysis():
-    # Note that we need to confirm here, hence the extra input!
     result = runner.invoke(
-        app, ["he-analysis", "sample_img/sample_he.jpg", "--cellpose-diameter", 80]
+        app,
+        [
+            "he-analysis",
+            "sample_img/sample_he.jpg",
+            "--cellpose-diameter",
+            80,
+            "--mask-path",
+            "sample_img/binary_mask.tif",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "Analysis completed !" in result.stdout
+
+
+def test_he_analysis_fluo():
+    result = runner.invoke(
+        app,
+        [
+            "he-analysis",
+            "sample_img/cytoplasm.tif",
+            "--cellpose-diameter",
+            80,
+            "--mask-path",
+            "sample_img/binary_mask_fluo.tif",
+            "--fluo-nuc",
+            "sample_img/nuclei.tif",
+        ],
     )
     assert result.exit_code == 0
     assert "Analysis completed !" in result.stdout

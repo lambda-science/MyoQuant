@@ -30,7 +30,7 @@ def sdh_analysis(
     ),
     mask_path: Path = typer.Option(
         None,
-        help="The path to a binary mask to hide slide region during analysis.",
+        help="The path to a binary mask to hide slide region during analysis. It needs to be of the same resolution as input image and only pixel marked as 1 will be analyzed.",
         exists=True,
         file_okay=True,
         dir_okay=False,
@@ -134,6 +134,25 @@ def sdh_analysis(
 
     image_ndarray_sdh = imread(image_path)
     console.print("Image loaded.", style="blue")
+
+    if mask_path is not None:
+        console.print(f"Reading binary mask: {mask_path} and masking...", style="blue")
+        mask_ndarray = imread(mask_path)
+        if np.unique(mask_ndarray).shape[0] != 2:
+            console.print(
+                "The mask image should be a binary image with only 2 values (0 and 1).",
+                style="red",
+            )
+            raise ValueError
+        if len(image_ndarray_sdh.shape) > 2:
+            mask_ndarray = np.repeat(
+                mask_ndarray.reshape(mask_ndarray.shape[0], mask_ndarray.shape[1], 1),
+                image_ndarray_sdh.shape[2],
+                axis=2,
+            )
+        image_ndarray_sdh = image_ndarray_sdh * mask_ndarray
+        console.print(f"Masking done.", style="blue")
+
     console.print("Starting the Analysis. This may take a while...", style="blue")
     if cellpose_path is None:
         console.print("Running CellPose...", style="blue")
@@ -152,6 +171,11 @@ def sdh_analysis(
 
     model_SDH = load_sdh_model(model_path)
     console.print("SDH Model loaded !", style="blue")
+
+    if mask_path is not None:
+        mask_ndarray = imread(mask_path)
+        mask_cellpose = mask_cellpose * mask_ndarray
+
     result_df, full_label_map, df_cellpose_details = run_sdh_analysis(
         image_ndarray_sdh, model_SDH, mask_cellpose
     )
@@ -197,7 +221,7 @@ def sdh_analysis(
 def he_analysis(
     image_path: Path = typer.Argument(
         ...,
-        help="The image file path to analyse.",
+        help="The HE image file path to analyse. If using single channel images, this will be used as cytoplasm image to run CellPose. Please use the --fluo-nuc option to indicate the path to the nuclei single image to run Stardist.",
         exists=True,
         file_okay=True,
         dir_okay=False,
@@ -207,7 +231,7 @@ def he_analysis(
     ),
     mask_path: Path = typer.Option(
         None,
-        help="The path to a binary mask to hide slide region during analysis.",
+        help="The path to a binary mask to hide slide region during analysis. It needs to be of the same resolution as input image and only pixel marked as 1 will be analyzed.",
         exists=True,
         file_okay=True,
         dir_okay=False,
@@ -262,6 +286,16 @@ def he_analysis(
     export_stats: bool = typer.Option(
         True, help="Export per fiber and per nuclei stat table."
     ),
+    fluo_nuc: Path = typer.Option(
+        None,
+        help="The path to single channel fluo image for nuclei.",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        writable=False,
+        readable=True,
+        resolve_path=True,
+    ),
 ):
     """Run the HE analysis and quantification on the image."""
     from .common_func import (
@@ -309,7 +343,10 @@ def he_analysis(
             "No Stardist mask provided, will run Stardist during the analysis.",
             style="blue",
         )
-        model_stardist = load_stardist()
+        if fluo_nuc is None:
+            model_stardist = load_stardist(fluo=False)
+        else:
+            model_stardist = load_stardist(fluo=True)
         console.print("Stardist Model loaded !", style="blue")
     else:
         console.print(f"Stardist mask used: {stardist_path}", style="blue")
@@ -317,6 +354,28 @@ def he_analysis(
     console.print("Reading image...", style="blue")
 
     image_ndarray = imread(image_path)
+    if fluo_nuc is not None:
+        fluo_nuc_ndarray = imread(fluo_nuc)
+
+    if mask_path is not None:
+        console.print(f"Reading binary mask: {mask_path} and masking...", style="blue")
+        mask_ndarray = imread(mask_path)
+        if np.unique(mask_ndarray).shape[0] != 2:
+            console.print(
+                "The mask image should be a binary image with only 2 values (0 and 1).",
+                style="red",
+            )
+            raise ValueError
+        if len(image_ndarray.shape) > 2:
+            mask_ndarray = np.repeat(
+                mask_ndarray.reshape(mask_ndarray.shape[0], mask_ndarray.shape[1], 1),
+                image_ndarray.shape[2],
+                axis=2,
+            )
+        image_ndarray = image_ndarray * mask_ndarray
+        if fluo_nuc is not None:
+            fluo_nuc_ndarray = fluo_nuc_ndarray * mask_ndarray
+        console.print(f"Masking done.", style="blue")
     console.print("Image loaded.", style="blue")
     console.print("Starting the Analysis. This may take a while...", style="blue")
     if cellpose_path is None:
@@ -334,9 +393,14 @@ def he_analysis(
 
     if stardist_path is None:
         console.print("Running Stardist...", style="blue")
-        mask_stardist = run_stardist(
-            image_ndarray, model_stardist, nms_thresh, prob_thresh
-        )
+        if fluo_nuc is not None:
+            mask_stardist = run_stardist(
+                fluo_nuc_ndarray, model_stardist, nms_thresh, prob_thresh
+            )
+        else:
+            mask_stardist = run_stardist(
+                image_ndarray, model_stardist, nms_thresh, prob_thresh
+            )
         mask_stardist = mask_stardist.astype(np.uint16)
         stardist_mask_filename = image_path.stem + "_stardist_mask.tiff"
         Image.fromarray(mask_stardist).save(output_path / stardist_mask_filename)
@@ -348,6 +412,12 @@ def he_analysis(
         mask_stardist = imread(stardist_path)
 
     console.print("Calculating all nuclei eccentricity scores... !", style="blue")
+
+    if mask_path is not None:
+        mask_ndarray = imread(mask_path)
+        mask_stardist = mask_stardist * mask_ndarray
+        mask_cellpose = mask_cellpose * mask_ndarray
+
     result_df, full_label_map, df_nuc_analysis, all_nuc_df_stats = run_he_analysis(
         image_ndarray, mask_cellpose, mask_stardist, eccentricity_thresh
     )
