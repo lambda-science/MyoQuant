@@ -15,6 +15,10 @@ app = typer.Typer(
     pretty_exceptions_show_locals=False,
 )
 
+from .utils.docs import app as docs_app
+
+app.add_typer(docs_app, name="docs", help="Generate documentation")
+
 
 @app.command()
 def sdh_analysis(
