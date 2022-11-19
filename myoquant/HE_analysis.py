@@ -42,11 +42,18 @@ def single_cell_analysis(
     df_nuc_single,
     x_fiber,
     y_fiber,
+    cell_label,
     internalised_threshold=0.75,
 ):
     n_nuc, n_nuc_intern, n_nuc_periph = 0, 0, 0
+    new_row_lst = []
+    new_col_names = df_nuc_single.columns.tolist()
+    new_col_names.append("internalised")
+    new_col_names.append("score_eccentricity")
+    new_col_names.append("cell label")
     for _, value in df_nuc_single.iterrows():
         n_nuc += 1
+        value = value.tolist()
         # Extend line and find closest point
 
         # Handling of the case where the nucleus is at the exact center of the fiber
@@ -78,8 +85,15 @@ def single_cell_analysis(
                     ratio_dist = dist_nuc_cent / dist_out_of_fiber
                     if ratio_dist <= internalised_threshold:
                         n_nuc_intern += 1
+                        value.append(True)
+                        value.append(ratio_dist)
+                        value.append(cell_label)
                     else:
                         n_nuc_periph += 1
+                        value.append(False)
+                        value.append(ratio_dist)
+                        value.append(cell_label)
+                    new_row_lst.append(value)
                     break
             except IndexError:
                 coords = list(zip(rr, cc))[index3 - 1]
@@ -90,17 +104,24 @@ def single_cell_analysis(
                 ratio_dist = dist_nuc_cent / dist_out_of_fiber
                 if ratio_dist < internalised_threshold:
                     n_nuc_intern += 1
+                    value.append(True)
+                    value.append(ratio_dist)
+                    value.append(cell_label)
                 else:
                     n_nuc_periph += 1
+                    value.append(True)
+                    value.append(ratio_dist)
+                    value.append(cell_label)
+                new_row_lst.append(value)
                 break
-
-    return n_nuc, n_nuc_intern, n_nuc_periph
+    df_nuc_single_stats = pd.DataFrame(new_row_lst, columns=new_col_names)
+    return n_nuc, n_nuc_intern, n_nuc_periph, df_nuc_single_stats
 
 
 def predict_all_cells(
     histo_img, cellpose_df, mask_stardist, internalised_threshold=0.75
 ):
-    list_n_nuc, list_n_nuc_intern, list_n_nuc_periph = [], [], []
+    list_n_nuc, list_n_nuc_intern, list_n_nuc_periph, list_nuc_df = [], [], [], []
     for index in range(len(cellpose_df)):
         (
             single_cell_img,
@@ -110,22 +131,26 @@ def predict_all_cells(
         ) = extract_ROIs(histo_img, index, cellpose_df, mask_stardist)
         x_fiber = cellpose_df.iloc[index, 3] - cellpose_df.iloc[index, 6]
         y_fiber = cellpose_df.iloc[index, 2] - cellpose_df.iloc[index, 5]
-        n_nuc, n_nuc_intern, n_nuc_periph = single_cell_analysis(
+        n_nuc, n_nuc_intern, n_nuc_periph, df_nuc_single_stats = single_cell_analysis(
             single_cell_img,
             single_cell_mask,
             df_nuc_single,
             x_fiber,
             y_fiber,
+            index + 1,
             internalised_threshold,
         )
         list_n_nuc.append(n_nuc)
         list_n_nuc_intern.append(n_nuc_intern)
         list_n_nuc_periph.append(n_nuc_periph)
+        list_nuc_df.append(df_nuc_single_stats)
         df_nuc_analysis = pd.DataFrame(
             list(zip(list_n_nuc, list_n_nuc_intern, list_n_nuc_periph)),
             columns=["N° Nuc", "N° Nuc Intern", "N° Nuc Periph"],
         )
-    return df_nuc_analysis
+    all_nuc_df_stats = pd.concat(list_nuc_df, ignore_index=True)
+    cellpose_df_stat = pd.concat([cellpose_df, df_nuc_analysis], axis=1)
+    return cellpose_df_stat, all_nuc_df_stats
 
 
 def paint_histo_img(histo_img, cellpose_df, prediction_df):
@@ -159,7 +184,7 @@ def run_he_analysis(image_ndarray, mask_cellpose, mask_stardist, eccentricity_th
         ],
     )
     df_cellpose = pd.DataFrame(props_cellpose)
-    df_nuc_analysis = predict_all_cells(
+    df_nuc_analysis, all_nuc_df_stats = predict_all_cells(
         image_ndarray, df_cellpose, mask_stardist, eccentricity_thresh
     )
 
@@ -197,4 +222,4 @@ def run_he_analysis(image_ndarray, mask_cellpose, mask_stardist, eccentricity_th
 
     result_df = pd.DataFrame(columns=headers, data=data)
     label_map_he = paint_histo_img(image_ndarray, df_cellpose, df_nuc_analysis)
-    return result_df, label_map_he
+    return result_df, label_map_he, df_nuc_analysis, all_nuc_df_stats

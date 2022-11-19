@@ -338,7 +338,7 @@ def he_analysis(
         mask_stardist = imread(stardist_path)
 
     console.print("Calculating all nuclei eccentricity scores... !", style="blue")
-    result_df, full_label_map = run_he_analysis(
+    result_df, full_label_map, df_nuc_analysis, all_nuc_df_stats = run_he_analysis(
         image_ndarray, mask_cellpose, mask_stardist, eccentricity_thresh
     )
     console.print("Analysis completed ! ", style="green")
@@ -352,14 +352,34 @@ def he_analysis(
             str(row[2]),
         )
     console.print(table)
-    csv_name = image_path.stem + "_results.csv"
+    csv_name = image_path.stem + "_results_summary.csv"
+    cell_details_name = image_path.stem + "_cell_details.csv"
+    nuc_details_name = image_path.stem + "_nuc_details.csv"
     result_df.to_csv(
         output_path / csv_name,
         index=False,
     )
     console.print(
-        f"Table saved as a .csv file named {output_path/csv_name}", style="green"
+        f"Summary Table saved as a .csv file named {output_path/csv_name}",
+        style="green",
     )
+    if export_stats:
+        df_nuc_analysis.drop("image", axis=1).to_csv(
+            output_path / cell_details_name,
+            index=False,
+        )
+        console.print(
+            f"Cell Table saved as a .csv file named {output_path/cell_details_name}",
+            style="green",
+        )
+        all_nuc_df_stats.drop("image", axis=1).to_csv(
+            output_path / nuc_details_name,
+            index=False,
+        )
+        console.print(
+            f"Nuclei Table saved as a .csv file named {output_path/nuc_details_name}",
+            style="green",
+        )
     label_map_name = image_path.stem + "_label_map.tiff"
     Image.fromarray(full_label_map).save(output_path / label_map_name)
     console.print(
