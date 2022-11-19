@@ -32,7 +32,7 @@ Using pip, you can simply install MyoQuant in a python environment with a simple
 
 To use the command-line tool, first activate your venv in which MyoQuant is installed: `source .venv/bin/activate`  
 Then you can perform SDH or HE analysis. You can use the command `myoquant --help` to list available commands.  
-💡 Run `myoquant --install-completion` to install auto-completion for the commands and arguments ! 🙂
+💡 Run `myoquant --install-completion [bash|zsh|fish|powershell|pwsh]` to install auto-completion for the commands and arguments ! 🙂
 
 - **For SDH Image Analysis** the command is:  
   `myoquant sdh-analysis IMAGE_PATH`  
