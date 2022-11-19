@@ -1,30 +1,8 @@
-import os
 import time
-import urllib.request
-from os import path
 from pathlib import Path
-
-import numpy as np
 import typer
-from PIL import Image
 from rich.console import Console
 from rich.table import Table
-
-from .common_func import (
-    is_gpu_availiable,
-    load_cellpose,
-    load_sdh_model,
-    load_stardist,
-    run_cellpose,
-    run_stardist,
-)
-from .HE_analysis import run_he_analysis
-from .SDH_analysis import run_sdh_analysis
-
-try:
-    from imageio.v2 import imread
-except:
-    from imageio import imread
 
 console = Console()
 
@@ -32,7 +10,7 @@ table = Table(title="Analysis Results")
 
 app = typer.Typer(
     name="MyoQuant",
-    add_completion=False,
+    add_completion=True,
     help="MyoQuant Analysis Command Line Interface",
     pretty_exceptions_show_locals=False,
 )
@@ -72,6 +50,22 @@ def sdh_analysis(
     ),
 ):
     """Run the SDH analysis and quantification on the image."""
+    import os
+    import urllib.request
+    from .common_func import (
+        is_gpu_availiable,
+        load_cellpose,
+        load_sdh_model,
+        run_cellpose,
+    )
+    from .SDH_analysis import run_sdh_analysis
+    import numpy as np
+    from PIL import Image
+
+    try:
+        from imageio.v2 import imread
+    except:
+        from imageio import imread
 
     console.print(f"Welcome to the SDH Analysis CLI tools.", style="magenta")
     console.print(f"Running SDH Quantification on image : {image_path}", style="blue")
@@ -90,7 +84,7 @@ def sdh_analysis(
     if model_path is None:
         console.print("No SDH model provided, will download latest one.", style="blue")
         model_path_abs = Path(os.path.abspath(__file__)).parents[0] / "model.h5"
-        if not path.exists(model_path_abs):
+        if not os.path.exists(model_path_abs):
             urllib.request.urlretrieve(
                 "https://lbgi.fr/~meyer/SDH_models/model.h5",
                 model_path_abs,
@@ -215,6 +209,21 @@ def he_analysis(
     ),
 ):
     """Run the HE analysis and quantification on the image."""
+    from .common_func import (
+        is_gpu_availiable,
+        load_cellpose,
+        load_stardist,
+        run_cellpose,
+        run_stardist,
+    )
+    from .HE_analysis import run_he_analysis
+    import numpy as np
+    from PIL import Image
+
+    try:
+        from imageio.v2 import imread
+    except:
+        from imageio import imread
 
     console.print(f"Welcome to the HE Analysis CLI tools.", style="magenta")
     console.print(f"Running HE Quantification on image : {image_path}", style="blue")
