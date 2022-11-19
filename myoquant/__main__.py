@@ -171,6 +171,11 @@ def he_analysis(
     image_path: Path = typer.Argument(
         ..., help="The image file path to analyse.", callback=check_file_exists
     ),
+    mask_path: Path = typer.Option(
+        None,
+        help="The path to a binary mask to hide slide region during analysis.",
+        callback=check_file_exists,
+    ),
     cellpose_path: Path = typer.Option(
         None,
         help="The pre-computed CellPose mask to use for analysis. Will run Cellpose if no path provided. Required as an image file.",
@@ -200,6 +205,13 @@ def he_analysis(
         help="Eccentricity threshold value for a nuclei to be considered as internalized during nuclei classification. When very close to 1 almost all nuclei are considered as internalized.",
         min=0,
         max=1,
+    ),
+    export_map: bool = typer.Option(
+        True,
+        help="Export the original image with cells painted by classification label.",
+    ),
+    export_stats: bool = typer.Option(
+        True, help="Export per fiber and per nuclei stat table."
     ),
 ):
     """Run the HE analysis and quantification on the image."""
