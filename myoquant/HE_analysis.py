@@ -129,7 +129,7 @@ def predict_all_cells(
 
 
 def paint_histo_img(histo_img, cellpose_df, prediction_df):
-    paint_img = np.zeros((histo_img.shape[0], histo_img.shape[1]), dtype=np.uint8)
+    paint_img = np.zeros((histo_img.shape[0], histo_img.shape[1]), dtype=np.uint16)
     for index in range(len(cellpose_df)):
         single_cell_mask = cellpose_df.iloc[index, 9].copy()
         if prediction_df.iloc[index, 1] == 0:

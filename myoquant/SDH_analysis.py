@@ -57,7 +57,9 @@ def predict_all_cells(histo_img, cellpose_df, _model_SDH):
 
 
 def paint_full_image(image_sdh, df_cellpose, class_predicted_all):
-    image_sdh_paint = np.zeros((image_sdh.shape[0], image_sdh.shape[1]), dtype=np.uint8)
+    image_sdh_paint = np.zeros(
+        (image_sdh.shape[0], image_sdh.shape[1]), dtype=np.uint16
+    )
     for index in track(range(len(df_cellpose)), description="Painting cells"):
         single_cell_mask = df_cellpose.iloc[index, 9].copy()
         if class_predicted_all[index] == 0:
