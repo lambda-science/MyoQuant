@@ -161,8 +161,6 @@ pid
 *.npy
 *.tiff
 *.npz
-*.jpg
 *.csv
-*.png
 *.tif
 debug_data/
