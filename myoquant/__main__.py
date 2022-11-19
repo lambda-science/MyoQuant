@@ -32,6 +32,11 @@ def sdh_analysis(
     image_path: Path = typer.Argument(
         ..., help="The image file path to analyse.", callback=check_file_exists
     ),
+    mask_path: Path = typer.Option(
+        None,
+        help="The path to a binary mask to hide slide region during analysis.",
+        callback=check_file_exists,
+    ),
     model_path: Path = typer.Option(
         None,
         help="The SDH model path to use for analysis. Will download latest one if no path provided.",
@@ -50,6 +55,11 @@ def sdh_analysis(
         None,
         help="Approximative single cell diameter in pixel for CellPose detection. If not specified, Cellpose will try to deduce it.",
     ),
+    export_map: bool = typer.Option(
+        True,
+        help="Export the original image with cells painted by classification label.",
+    ),
+    export_stats: bool = typer.Option(True, help="Export per fiber stat table."),
 ):
     """Run the SDH analysis and quantification on the image."""
     import os
