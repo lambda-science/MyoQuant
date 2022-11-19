@@ -164,3 +164,7 @@ pid
 *.csv
 *.tif
 debug_data/
+!binary_mask.tif
+!binary_mask_fluo.tif
+!nuclei.tif
+!cytoplasm.tif
