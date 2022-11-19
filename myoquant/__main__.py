@@ -152,7 +152,7 @@ def sdh_analysis(
 
     model_SDH = load_sdh_model(model_path)
     console.print("SDH Model loaded !", style="blue")
-    result_df, full_label_map = run_sdh_analysis(
+    result_df, full_label_map, df_cellpose_details = run_sdh_analysis(
         image_ndarray_sdh, model_SDH, mask_cellpose
     )
     console.print("Analysis completed ! ", style="green")
@@ -174,6 +174,16 @@ def sdh_analysis(
     console.print(
         f"Table saved as a .csv file named {output_path/csv_name}", style="green"
     )
+    if export_stats:
+        cell_details_name = image_path.stem + "_cell_details.csv"
+        df_cellpose_details.drop("image", axis=1).to_csv(
+            output_path / cell_details_name,
+            index=False,
+        )
+        console.print(
+            f"Cell Table saved as a .csv file named {output_path/cell_details_name}",
+            style="green",
+        )
     label_map_name = image_path.stem + "_label_map.tiff"
     Image.fromarray(full_label_map).save(output_path / label_map_name)
     console.print(

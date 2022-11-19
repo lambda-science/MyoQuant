@@ -92,7 +92,8 @@ def run_sdh_analysis(image_array, model_SDH, mask_cellpose):
     class_predicted_all, proba_predicted_all = predict_all_cells(
         image_array, df_cellpose, model_SDH
     )
-
+    df_cellpose["class_predicted"] = class_predicted_all
+    df_cellpose["proba_predicted"] = proba_predicted_all
     count_per_label = np.unique(class_predicted_all, return_counts=True)
     class_and_proba_df = pd.DataFrame(
         list(zip(class_predicted_all, proba_predicted_all)),
@@ -114,4 +115,4 @@ def run_sdh_analysis(image_array, model_SDH, mask_cellpose):
     result_df = pd.DataFrame(columns=headers, data=data)
     # Paint The Full Image
     full_label_map = paint_full_image(image_array, df_cellpose, class_predicted_all)
-    return result_df, full_label_map
+    return result_df, full_label_map, df_cellpose
