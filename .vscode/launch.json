@@ -5,12 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Module",
+            "name": "SDH Analysis",
             "type": "python",
             "request": "launch",
             "module": "myoquant",
             "justMyCode": true,
-            "args": ["he-analysis", "debug_data/tritc_16.tif", "--stardist-path", "debug_data/dapi_16_labels.tif", "--cellpose-path", "debug_data/tritc_16_cp_masks.tif"],
+            "args": ["sdh-analysis", "/home/corentin/code-project/MyoQuant/sample_img/sample_sdh.jpg", "--cellpose-path", "sample_img/sample_sdh_cellpose_mask.tiff"],
+        },
+        {
+            "name": "HE Analysis",
+            "type": "python",
+            "request": "launch",
+            "module": "myoquant",
+            "justMyCode": true,
+            "args": ["he-analysis", "sample_img/sample_he.jpg", "--stardist-path", "sample_img/sample_he_stardist_mask.tiff", "--cellpose-path", "sample_img/sample_he_cellpose_mask.tiff"],
         }
     ]
 }
