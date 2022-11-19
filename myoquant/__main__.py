@@ -16,7 +16,9 @@ app = typer.Typer(
 )
 
 
-def check_file_exists(path):
+def check_file_exists(ctx: typer.Context, path):
+    if ctx.resilient_parsing:
+        return
     if path is None:
         return path
     if not path.exists():
