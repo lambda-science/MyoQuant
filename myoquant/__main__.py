@@ -10,42 +10,53 @@ table = Table(title="Analysis Results")
 
 app = typer.Typer(
     name="MyoQuant",
-    add_completion=True,
+    add_completion=False,
     help="MyoQuant Analysis Command Line Interface",
     pretty_exceptions_show_locals=False,
 )
 
 
-def check_file_exists(ctx: typer.Context, path):
-    if ctx.resilient_parsing:
-        return
-    if path is None:
-        return path
-    if not path.exists():
-        console.print(f"The path you've supplied {path} does not exist.", style="red")
-        raise typer.Exit(code=1)
-    return path
-
-
 @app.command()
 def sdh_analysis(
     image_path: Path = typer.Argument(
-        ..., help="The image file path to analyse.", callback=check_file_exists
+        ...,
+        help="The image file path to analyse.",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        writable=False,
+        readable=True,
+        resolve_path=True,
     ),
     mask_path: Path = typer.Option(
         None,
         help="The path to a binary mask to hide slide region during analysis.",
-        callback=check_file_exists,
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        writable=False,
+        readable=True,
+        resolve_path=True,
     ),
     model_path: Path = typer.Option(
         None,
         help="The SDH model path to use for analysis. Will download latest one if no path provided.",
-        callback=check_file_exists,
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        writable=False,
+        readable=True,
+        resolve_path=True,
     ),
     cellpose_path: Path = typer.Option(
         None,
         help="The pre-computed CellPose mask to use for analysis. Will run Cellpose if no path provided. Required as an image file.",
-        callback=check_file_exists,
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        writable=False,
+        readable=True,
+        resolve_path=True,
     ),
     output_path: Path = typer.Option(
         None,
@@ -175,22 +186,44 @@ def sdh_analysis(
 @app.command()
 def he_analysis(
     image_path: Path = typer.Argument(
-        ..., help="The image file path to analyse.", callback=check_file_exists
+        ...,
+        help="The image file path to analyse.",
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        writable=False,
+        readable=True,
+        resolve_path=True,
     ),
     mask_path: Path = typer.Option(
         None,
         help="The path to a binary mask to hide slide region during analysis.",
-        callback=check_file_exists,
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        writable=False,
+        readable=True,
+        resolve_path=True,
     ),
     cellpose_path: Path = typer.Option(
         None,
         help="The pre-computed CellPose mask to use for analysis. Will run Cellpose if no path provided. Required as an image file.",
-        callback=check_file_exists,
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        writable=False,
+        readable=True,
+        resolve_path=True,
     ),
     stardist_path: Path = typer.Option(
         None,
         help="The pre-computed Stardist mask to use for analysis. Will run Stardist if no path provided. Required as an image file.",
-        callback=check_file_exists,
+        exists=True,
+        file_okay=True,
+        dir_okay=False,
+        writable=False,
+        readable=True,
+        resolve_path=True,
     ),
     output_path: Path = typer.Option(
         None,
