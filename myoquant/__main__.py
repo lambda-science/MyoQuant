@@ -198,7 +198,7 @@ def he_analysis(
     ),
     eccentricity_thresh: float = typer.Option(
         0.75,
-        help="Eccentricity threshold value for a nuclei to be considered as internalized during nuclei classification. When very close to 1 almost all nuclei are considered as internalized.",
+        help="Eccentricity threshold value for a nucleus to be considered as internalized during nuclei classification. When very close to 1 almost all nuclei are considered as internalized.",
         min=0,
         max=1,
     ),
