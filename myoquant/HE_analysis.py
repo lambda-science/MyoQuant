@@ -157,12 +157,12 @@ def paint_histo_img(histo_img, cellpose_df, prediction_df):
     paint_img = np.zeros((histo_img.shape[0], histo_img.shape[1]), dtype=np.uint16)
     for index in range(len(cellpose_df)):
         single_cell_mask = cellpose_df.iloc[index, 9].copy()
-        if prediction_df.iloc[index, 1] == 0:
+        if prediction_df["N° Nuc Intern"].iloc[index] == 0:
             paint_img[
                 cellpose_df.iloc[index, 5] : cellpose_df.iloc[index, 7],
                 cellpose_df.iloc[index, 6] : cellpose_df.iloc[index, 8],
             ][single_cell_mask] = 1
-        elif prediction_df.iloc[index, 1] > 0:
+        elif prediction_df["N° Nuc Intern"].iloc[index] > 0:
             paint_img[
                 cellpose_df.iloc[index, 5] : cellpose_df.iloc[index, 7],
                 cellpose_df.iloc[index, 6] : cellpose_df.iloc[index, 8],
