@@ -84,6 +84,8 @@ def sdh_analysis(
         load_cellpose,
         load_sdh_model,
         run_cellpose,
+        label2rgb,
+        blend_image_with_label,
     )
     from .SDH_analysis import run_sdh_analysis
     import numpy as np
@@ -183,6 +185,13 @@ def sdh_analysis(
     result_df, full_label_map, df_cellpose_details = run_sdh_analysis(
         image_ndarray_sdh, model_SDH, mask_cellpose
     )
+    if export_map:
+        console.print("Blending label and original image together ! ", style="blue")
+        labelRGB_map = label2rgb(image_ndarray_sdh, full_label_map)
+        overlay_img = blend_image_with_label(image_ndarray_sdh, labelRGB_map)
+        overlay_filename = image_path.stem + "_label_blend.tiff"
+        overlay_img.save(output_path / overlay_filename)
+
     console.print("Analysis completed ! ", style="green")
     table.add_column("Feature", justify="left", style="cyan")
     table.add_column("Raw Count", justify="center", style="magenta")
@@ -217,7 +226,6 @@ def sdh_analysis(
     console.print(
         f"Labelled image saved as {output_path/label_map_name}", style="green"
     )
-    painted_img_name = image_path.stem + "_painted.tiff"
     console.print("--- %s seconds ---" % (time.time() - start_time))
 
 
@@ -308,6 +316,8 @@ def he_analysis(
         load_stardist,
         run_cellpose,
         run_stardist,
+        label2rgb,
+        blend_image_with_label,
     )
     from .HE_analysis import run_he_analysis
     import numpy as np
@@ -358,6 +368,7 @@ def he_analysis(
     console.print("Reading image...", style="blue")
 
     image_ndarray = imread(image_path)
+
     if fluo_nuc is not None:
         fluo_nuc_ndarray = imread(fluo_nuc)
 
@@ -379,6 +390,9 @@ def he_analysis(
         image_ndarray = image_ndarray * mask_ndarray
         if fluo_nuc is not None:
             fluo_nuc_ndarray = fluo_nuc_ndarray * mask_ndarray
+    if fluo_nuc is not None:
+        mix_cyto_nuc = np.maximum(image_ndarray, fluo_nuc_ndarray)
+
         console.print(f"Masking done.", style="blue")
     console.print("Image loaded.", style="blue")
     console.print("Starting the Analysis. This may take a while...", style="blue")
@@ -425,6 +439,17 @@ def he_analysis(
     result_df, full_label_map, df_nuc_analysis, all_nuc_df_stats = run_he_analysis(
         image_ndarray, mask_cellpose, mask_stardist, eccentricity_thresh
     )
+    if export_map:
+        console.print("Blending label and original image together ! ", style="blue")
+        if fluo_nuc is not None:
+            labelRGB_map = label2rgb(mix_cyto_nuc, full_label_map)
+            overlay_img = blend_image_with_label(mix_cyto_nuc, labelRGB_map, fluo=True)
+        else:
+            labelRGB_map = label2rgb(image_ndarray, full_label_map)
+            overlay_img = blend_image_with_label(image_ndarray, labelRGB_map)
+        overlay_filename = image_path.stem + "_label_blend.tiff"
+        overlay_img.save(output_path / overlay_filename)
+
     console.print("Analysis completed ! ", style="green")
     table.add_column("Feature", justify="left", style="cyan")
     table.add_column("Raw Count", justify="center", style="magenta")
@@ -447,6 +472,11 @@ def he_analysis(
         f"Summary Table saved as a .csv file named {output_path/csv_name}",
         style="green",
     )
+    if export_map:
+        console.print(
+            f"Overlay image saved as a .tiff file named {output_path/overlay_filename}",
+            style="green",
+        )
     if export_stats:
         df_nuc_analysis.drop("image", axis=1).to_csv(
             output_path / cell_details_name,
@@ -469,7 +499,6 @@ def he_analysis(
     console.print(
         f"Labelled image saved as {output_path/label_map_name}", style="green"
     )
-    painted_img_name = image_path.stem + "_painted.tiff"
     console.print("--- %s seconds ---" % (time.time() - start_time))
 
 

@@ -8,7 +8,8 @@ from csbdeep.utils import normalize
 from stardist.models import StarDist2D
 from tensorflow import keras
 from tensorflow.config import list_physical_devices
-
+import numpy as np
+from PIL import Image
 from .gradcam import *
 from .random_brightness import *
 
@@ -64,3 +65,24 @@ def run_stardist(image, model_stardist, nms_thresh=0.4, prob_thresh=0.5):
         img_norm, nms_thresh=nms_thresh, prob_thresh=prob_thresh
     )
     return mask_stardist
+
+
+def label2rgb(img_ndarray, label_map):
+    label_to_color = {
+        0: [255, 255, 255],
+        1: [15, 157, 88],
+        2: [219, 68, 55],
+    }
+    img_rgb = np.zeros((img_ndarray.shape[0], img_ndarray.shape[1], 3), dtype=np.uint8)
+
+    for gray, rgb in label_to_color.items():
+        img_rgb[label_map == gray, :] = rgb
+    return img_rgb
+
+
+def blend_image_with_label(image, label_rgb, fluo=False):
+    image = Image.fromarray(image)
+    label_rgb = Image.fromarray(label_rgb)
+    if fluo:
+        image = image.convert("RGB")
+    return Image.blend(image, label_rgb, 0.5)
