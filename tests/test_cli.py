@@ -18,7 +18,7 @@ def test_sdh_analysis():
         ],
     )
     assert result.exit_code == 0
-    assert "Analysis completed !" in result.stdout
+    assert "Analysis Results" in result.stdout
 
 
 def test_he_analysis():
@@ -34,7 +34,7 @@ def test_he_analysis():
         ],
     )
     assert result.exit_code == 0
-    assert "Analysis completed !" in result.stdout
+    assert "Analysis Results" in result.stdout
 
 
 def test_he_analysis_fluo():
@@ -52,4 +52,4 @@ def test_he_analysis_fluo():
         ],
     )
     assert result.exit_code == 0
-    assert "Analysis completed !" in result.stdout
+    assert "Analysis Results" in result.stdout
