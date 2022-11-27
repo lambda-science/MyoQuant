@@ -30,7 +30,8 @@ def predict_single_cell(single_cell_img, _model_SDH):
 
 def resize_batch_cells(histo_img, cellpose_df):
     img_array_full = np.empty((len(cellpose_df), 256, 256, 3))
-    for index in track(range(len(cellpose_df)), description="Resizing cells"):
+    # for index in track(range(len(cellpose_df)), description="Resizing cells"):
+    for index in range(len(cellpose_df)):
         single_cell_img = histo_img[
             cellpose_df.iloc[index, 5] : cellpose_df.iloc[index, 7],
             cellpose_df.iloc[index, 6] : cellpose_df.iloc[index, 8],
@@ -60,7 +61,8 @@ def paint_full_image(image_sdh, df_cellpose, class_predicted_all):
     image_sdh_paint = np.zeros(
         (image_sdh.shape[0], image_sdh.shape[1]), dtype=np.uint16
     )
-    for index in track(range(len(df_cellpose)), description="Painting cells"):
+    # for index in track(range(len(df_cellpose)), description="Painting cells"):
+    for index in range(len(df_cellpose)):
         single_cell_mask = df_cellpose.iloc[index, 9].copy()
         if class_predicted_all[index] == 0:
             image_sdh_paint[
