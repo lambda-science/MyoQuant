@@ -3,10 +3,11 @@ from pathlib import Path
 import typer
 from rich.console import Console
 from rich.table import Table
+from rich.progress import Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 
 app = typer.Typer()
 console = Console()
-table = Table(title="Analysis Results")
+table = Table(title="Analysis Results 🥳")
 
 
 @app.command()
@@ -90,27 +91,58 @@ def he_analysis(
     ),
 ):
     """Run the HE analysis and quantification on the image."""
-    console.print(f"Welcome to the HE Analysis CLI tools.", style="magenta")
-    console.print(f"Running HE Quantification on image : {image_path}", style="blue")
     start_time = time.time()
-
-    from ..src.common_func import (
-        is_gpu_availiable,
-        load_cellpose,
-        load_stardist,
-        run_cellpose,
-        run_stardist,
-        label2rgb,
-        blend_image_with_label,
+    console.print(
+        f"👋 [bold dark_orange]Welcome to the nuclei position analysis (HE and fluo images)",
     )
-    from ..src.HE_analysis import run_he_analysis
-    import numpy as np
-    from PIL import Image
+    console.print(f"📄 INPUT: raw image: {image_path}", style="blue")
 
-    try:
-        from imageio.v2 import imread
-    except:
-        from imageio import imread
+    if fluo_nuc is not None:
+        console.print(f"📄 INPUT: raw nuclear fluo image: {fluo_nuc}", style="blue")
+
+    if cellpose_path is None:
+        console.print(
+            "💡 INFO: No CellPose mask provided, will run CellPose during the analysis.",
+            style="blue",
+        )
+    else:
+        console.print(f"📄 INPUT: CellPose mask: {cellpose_path}", style="blue")
+
+    if stardist_path is None:
+        console.print(
+            "💡 INFO: No Stardist mask provided, will run Stardist during the analysis.",
+            style="blue",
+        )
+    else:
+        console.print(f"📄 INPUT: Stardist mask: {stardist_path}", style="blue")
+    if mask_path is not None:
+        console.print(f"📄 INPUT: binary mask: {mask_path}", style="blue")
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        TimeElapsedColumn(),
+        transient=False,
+    ) as progress:
+        progress.add_task(description="Importing the libraries...", total=None)
+        from ..src.common_func import (
+            is_gpu_availiable,
+            load_cellpose,
+            load_stardist,
+            run_cellpose,
+            run_stardist,
+            label2rgb,
+            blend_image_with_label,
+            HiddenPrints,
+        )
+        from ..src.HE_analysis import run_he_analysis
+        import numpy as np
+        from PIL import Image
+
+        try:
+            from imageio.v2 import imread
+        except:
+            from imageio import imread
 
     if output_path is None:
         output_path = image_path.parents[0]
@@ -118,119 +150,144 @@ def he_analysis(
         Path(output_path).mkdir(parents=True, exist_ok=True)
 
     if is_gpu_availiable():
-        console.print(f"GPU is available.", style="green")
+        console.print(f"💡 INFO: GPU is available.", style="blue")
     else:
-        console.print(f"GPU is not available.", style="red")
+        console.print(f"❌ INFO: GPU is not available. Using CPU only.", style="red")
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        TimeElapsedColumn(),
+        transient=False,
+    ) as progress:
+        progress.add_task(description="Reading all inputs...", total=None)
+        image_ndarray = imread(image_path)
+
+        if fluo_nuc is not None:
+            fluo_nuc_ndarray = imread(fluo_nuc)
+            mix_cyto_nuc = np.maximum(image_ndarray, fluo_nuc_ndarray)
+        if mask_path is not None:
+            mask_ndarray = imread(mask_path)
+            if np.unique(mask_ndarray).shape[0] != 2:
+                console.print(
+                    "The mask image should be a binary image with only 2 values (0 and 1).",
+                    style="red",
+                )
+                raise ValueError
+            if len(image_ndarray.shape) > 2:
+                mask_ndarray = np.repeat(
+                    mask_ndarray.reshape(
+                        mask_ndarray.shape[0], mask_ndarray.shape[1], 1
+                    ),
+                    image_ndarray.shape[2],
+                    axis=2,
+                )
+            image_ndarray = image_ndarray * mask_ndarray
+            if fluo_nuc is not None:
+                fluo_nuc_ndarray = fluo_nuc_ndarray * mask_ndarray
+        if cellpose_path is not None:
+            mask_cellpose = imread(cellpose_path)
+        if stardist_path is not None:
+            mask_stardist = imread(stardist_path)
 
     if cellpose_path is None:
-        console.print(
-            "No CellPose mask provided, will run CellPose during the analysis.",
-            style="blue",
-        )
-        model_cellpose = load_cellpose()
-        console.print("CellPose Model loaded !", style="blue")
-    else:
-        console.print(f"CellPose mask used: {cellpose_path}", style="blue")
-
-    if stardist_path is None:
-        console.print(
-            "No Stardist mask provided, will run Stardist during the analysis.",
-            style="blue",
-        )
-        if fluo_nuc is None:
-            model_stardist = load_stardist(fluo=False)
-        else:
-            model_stardist = load_stardist(fluo=True)
-        console.print("Stardist Model loaded !", style="blue")
-    else:
-        console.print(f"Stardist mask used: {stardist_path}", style="blue")
-
-    console.print("Reading image...", style="blue")
-
-    image_ndarray = imread(image_path)
-
-    if fluo_nuc is not None:
-        fluo_nuc_ndarray = imread(fluo_nuc)
-
-    if mask_path is not None:
-        console.print(f"Reading binary mask: {mask_path} and masking...", style="blue")
-        mask_ndarray = imread(mask_path)
-        if np.unique(mask_ndarray).shape[0] != 2:
-            console.print(
-                "The mask image should be a binary image with only 2 values (0 and 1).",
-                style="red",
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            TimeElapsedColumn(),
+            transient=False,
+        ) as progress:
+            progress.add_task(description="Running CellPose...", total=None)
+            model_cellpose = load_cellpose()
+            mask_cellpose = run_cellpose(
+                image_ndarray, model_cellpose, cellpose_diameter
             )
-            raise ValueError
-        if len(image_ndarray.shape) > 2:
-            mask_ndarray = np.repeat(
-                mask_ndarray.reshape(mask_ndarray.shape[0], mask_ndarray.shape[1], 1),
-                image_ndarray.shape[2],
-                axis=2,
-            )
-        image_ndarray = image_ndarray * mask_ndarray
-        if fluo_nuc is not None:
-            fluo_nuc_ndarray = fluo_nuc_ndarray * mask_ndarray
-    if fluo_nuc is not None:
-        mix_cyto_nuc = np.maximum(image_ndarray, fluo_nuc_ndarray)
-
-        console.print(f"Masking done.", style="blue")
-    console.print("Image loaded.", style="blue")
-    console.print("Starting the Analysis. This may take a while...", style="blue")
-    if cellpose_path is None:
-        console.print("Running CellPose...", style="blue")
-        mask_cellpose = run_cellpose(image_ndarray, model_cellpose, cellpose_diameter)
-        mask_cellpose = mask_cellpose.astype(np.uint16)
-        cellpose_mask_filename = image_path.stem + "_cellpose_mask.tiff"
-        Image.fromarray(mask_cellpose).save(output_path / cellpose_mask_filename)
+            mask_cellpose = mask_cellpose.astype(np.uint16)
+            cellpose_mask_filename = image_path.stem + "_cellpose_mask.tiff"
+            Image.fromarray(mask_cellpose).save(output_path / cellpose_mask_filename)
         console.print(
-            f"CellPose mask saved as {output_path/cellpose_mask_filename}",
+            f"💾 OUTPUT: CellPose mask saved as {output_path/cellpose_mask_filename}",
             style="green",
         )
-    else:
-        mask_cellpose = imread(cellpose_path)
-
     if stardist_path is None:
-        console.print("Running Stardist...", style="blue")
-        if fluo_nuc is not None:
-            mask_stardist = run_stardist(
-                fluo_nuc_ndarray, model_stardist, nms_thresh, prob_thresh
-            )
-        else:
-            mask_stardist = run_stardist(
-                image_ndarray, model_stardist, nms_thresh, prob_thresh
-            )
-        mask_stardist = mask_stardist.astype(np.uint16)
-        stardist_mask_filename = image_path.stem + "_stardist_mask.tiff"
-        Image.fromarray(mask_stardist).save(output_path / stardist_mask_filename)
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            TimeElapsedColumn(),
+            transient=False,
+        ) as progress:
+            progress.add_task(description="Running Stardist...", total=None)
+            with HiddenPrints():
+                if fluo_nuc is None:
+                    model_stardist = load_stardist(fluo=False)
+                else:
+                    model_stardist = load_stardist(fluo=True)
+            if fluo_nuc is not None:
+                with HiddenPrints():
+                    mask_stardist = run_stardist(
+                        fluo_nuc_ndarray, model_stardist, nms_thresh, prob_thresh
+                    )
+            else:
+                with HiddenPrints():
+                    mask_stardist = run_stardist(
+                        image_ndarray, model_stardist, nms_thresh, prob_thresh
+                    )
+            mask_stardist = mask_stardist.astype(np.uint16)
+            stardist_mask_filename = image_path.stem + "_stardist_mask.tiff"
+            Image.fromarray(mask_stardist).save(output_path / stardist_mask_filename)
         console.print(
-            f"Stardist mask saved as {output_path/stardist_mask_filename}",
+            f"💾 OUTPUT: Stardist mask saved as {output_path/stardist_mask_filename}",
             style="green",
         )
-    else:
-        mask_stardist = imread(stardist_path)
-
-    console.print("Calculating all nuclei eccentricity scores... !", style="blue")
 
     if mask_path is not None:
-        mask_ndarray = imread(mask_path)
-        mask_stardist = mask_stardist * mask_ndarray
-        mask_cellpose = mask_cellpose * mask_ndarray
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            TimeElapsedColumn(),
+            transient=False,
+        ) as progress:
+            progress.add_task(
+                description="Masking Cellpose and Stardist mask with binary mask...",
+                total=None,
+            )
+            mask_ndarray = imread(mask_path)
+            mask_stardist = mask_stardist * mask_ndarray
+            mask_cellpose = mask_cellpose * mask_ndarray
 
-    result_df, full_label_map, df_nuc_analysis, all_nuc_df_stats = run_he_analysis(
-        image_ndarray, mask_cellpose, mask_stardist, eccentricity_thresh
-    )
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        TimeElapsedColumn(),
+        transient=False,
+    ) as progress:
+        progress.add_task(
+            description="Calculating all nuclei eccentricity scores...", total=None
+        )
+        result_df, full_label_map, df_nuc_analysis, all_nuc_df_stats = run_he_analysis(
+            image_ndarray, mask_cellpose, mask_stardist, eccentricity_thresh
+        )
     if export_map:
-        console.print("Blending label and original image together ! ", style="blue")
-        if fluo_nuc is not None:
-            labelRGB_map = label2rgb(mix_cyto_nuc, full_label_map)
-            overlay_img = blend_image_with_label(mix_cyto_nuc, labelRGB_map, fluo=True)
-        else:
-            labelRGB_map = label2rgb(image_ndarray, full_label_map)
-            overlay_img = blend_image_with_label(image_ndarray, labelRGB_map)
-        overlay_filename = image_path.stem + "_label_blend.tiff"
-        overlay_img.save(output_path / overlay_filename)
+        with Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            TimeElapsedColumn(),
+            transient=False,
+        ) as progress:
+            progress.add_task(
+                description="Blending label and original image together...", total=None
+            )
+            if fluo_nuc is not None:
+                labelRGB_map = label2rgb(mix_cyto_nuc, full_label_map)
+                overlay_img = blend_image_with_label(
+                    mix_cyto_nuc, labelRGB_map, fluo=True
+                )
+            else:
+                labelRGB_map = label2rgb(image_ndarray, full_label_map)
+                overlay_img = blend_image_with_label(image_ndarray, labelRGB_map)
+            overlay_filename = image_path.stem + "_label_blend.tiff"
+            overlay_img.save(output_path / overlay_filename)
 
-    console.print("Analysis completed ! ", style="green")
     table.add_column("Feature", justify="left", style="cyan")
     table.add_column("Raw Count", justify="center", style="magenta")
     table.add_column("Proportion (%)", justify="right", style="green")
@@ -249,12 +306,12 @@ def he_analysis(
         index=False,
     )
     console.print(
-        f"Summary Table saved as a .csv file named {output_path/csv_name}",
+        f"💾 OUTPUT: Summary Table saved as {output_path/csv_name}",
         style="green",
     )
     if export_map:
         console.print(
-            f"Overlay image saved as a .tiff file named {output_path/overlay_filename}",
+            f"💾 OUTPUT: Overlay image saved as {output_path/overlay_filename}",
             style="green",
         )
     if export_stats:
@@ -263,7 +320,7 @@ def he_analysis(
             index=False,
         )
         console.print(
-            f"Cell Table saved as a .csv file named {output_path/cell_details_name}",
+            f"💾 OUTPUT: Cell Table saved as {output_path/cell_details_name}",
             style="green",
         )
         all_nuc_df_stats.drop("image", axis=1).to_csv(
@@ -271,12 +328,12 @@ def he_analysis(
             index=False,
         )
         console.print(
-            f"Nuclei Table saved as a .csv file named {output_path/nuc_details_name}",
+            f"💾 OUTPUT: Nuclei Table saved as {output_path/nuc_details_name}",
             style="green",
         )
     label_map_name = image_path.stem + "_label_map.tiff"
     Image.fromarray(full_label_map).save(output_path / label_map_name)
     console.print(
-        f"Labelled image saved as {output_path/label_map_name}", style="green"
+        f"💾 OUTPUT: Label map saved as {output_path/label_map_name}", style="green"
     )
-    console.print("--- %s seconds ---" % (time.time() - start_time))
+    console.print("--- %s seconds ---" % (int(time.time() - start_time)))

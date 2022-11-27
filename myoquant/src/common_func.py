@@ -1,6 +1,7 @@
 import os
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+import sys
 import tensorflow as tf
 import torch
 from cellpose.models import Cellpose
@@ -22,6 +23,16 @@ if len(list_physical_devices("GPU")) >= 1:
 
 else:
     use_GPU = False
+
+
+class HiddenPrints:
+    def __enter__(self):
+        self._original_stdout = sys.stdout
+        sys.stdout = open(os.devnull, "w")
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        sys.stdout.close()
+        sys.stdout = self._original_stdout
 
 
 def is_gpu_availiable():
