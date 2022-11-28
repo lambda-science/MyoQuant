@@ -7,8 +7,9 @@ import tensorflow as tf
 from rich.progress import track
 from skimage.measure import regionprops_table
 
-from .gradcam import *
+from .gradcam import get_img_array, make_gradcam_heatmap, save_and_display_gradcam
 from .random_brightness import *
+import numpy as np
 
 labels_predict = ["control", "sick"]
 tf.random.set_seed(42)
