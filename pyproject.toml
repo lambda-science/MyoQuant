@@ -29,7 +29,7 @@ rich = "*"
 pytest = "^7"
 mypy = "^0.991"
 black = "^22.10.0"
-pylint = "^2.15.6"
+ruff = "^0.0.142"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
