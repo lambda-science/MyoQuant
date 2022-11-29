@@ -1,11 +1,11 @@
-# `MyoQuant`
+# `myoquant`
 
 MyoQuant Analysis Command Line Interface
 
 **Usage**:
 
 ```console
-$ MyoQuant [OPTIONS] COMMAND [ARGS]...
+$ myoquant [OPTIONS] COMMAND [ARGS]...
 ```
 
 **Options**:
@@ -18,14 +18,14 @@ $ MyoQuant [OPTIONS] COMMAND [ARGS]...
 * `he-analysis`: Run the HE analysis and quantification on...
 * `sdh-analysis`: Run the SDH analysis and quantification on...
 
-## `MyoQuant docs`
+## `myoquant docs`
 
 Generate documentation
 
 **Usage**:
 
 ```console
-$ MyoQuant docs [OPTIONS] COMMAND [ARGS]...
+$ myoquant docs [OPTIONS] COMMAND [ARGS]...
 ```
 
 **Options**:
@@ -36,14 +36,14 @@ $ MyoQuant docs [OPTIONS] COMMAND [ARGS]...
 
 * `generate`: Generate markdown version of usage...
 
-### `MyoQuant docs generate`
+### `myoquant docs generate`
 
 Generate markdown version of usage documentation
 
 **Usage**:
 
 ```console
-$ MyoQuant docs generate [OPTIONS]
+$ myoquant docs generate [OPTIONS]
 ```
 
 **Options**:
@@ -52,14 +52,14 @@ $ MyoQuant docs generate [OPTIONS]
 * `--output FILE`: An output file to write docs to, like README.md.
 * `--help`: Show this message and exit.
 
-## `MyoQuant he-analysis`
+## `myoquant he-analysis`
 
 Run the HE analysis and quantification on the image.
 
 **Usage**:
 
 ```console
-$ MyoQuant he-analysis [OPTIONS] IMAGE_PATH
+$ myoquant he-analysis [OPTIONS] IMAGE_PATH
 ```
 
 **Arguments**:
@@ -81,14 +81,14 @@ $ MyoQuant he-analysis [OPTIONS] IMAGE_PATH
 * `--fluo-nuc FILE`: The path to single channel fluo image for nuclei.
 * `--help`: Show this message and exit.
 
-## `MyoQuant sdh-analysis`
+## `myoquant sdh-analysis`
 
 Run the SDH analysis and quantification on the image.
 
 **Usage**:
 
 ```console
-$ MyoQuant sdh-analysis [OPTIONS] IMAGE_PATH
+$ myoquant sdh-analysis [OPTIONS] IMAGE_PATH
 ```
 
 **Arguments**:
@@ -105,4 +105,3 @@ $ MyoQuant sdh-analysis [OPTIONS] IMAGE_PATH
 * `--export-map / --no-export-map`: Export the original image with cells painted by classification label.  [default: export-map]
 * `--export-stats / --no-export-stats`: Export per fiber stat table.  [default: export-stats]
 * `--help`: Show this message and exit.
-
