@@ -30,6 +30,7 @@ def extract_ROIs(histo_img, index, cellpose_df, mask_stardist):
             "bbox",
             "image",
             "perimeter",
+            "feret_diameter_max",
         ],
     )
     df_nuc_single = pd.DataFrame(props_nuc_single)
@@ -181,6 +182,7 @@ def run_he_analysis(image_ndarray, mask_cellpose, mask_stardist, eccentricity_th
             "bbox",
             "image",
             "perimeter",
+            "feret_diameter_max",
         ],
     )
     df_cellpose = pd.DataFrame(props_cellpose)
