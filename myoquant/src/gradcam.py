@@ -1,9 +1,22 @@
+"""
+Module that contains function to compute GradCam for SDH Model
+Source: https://keras.io/examples/vision/grad_cam/
+"""
 import tensorflow as tf
 import matplotlib.cm as cm
 import numpy as np
 
-# GRAD-CAM
+
 def get_img_array(img_path, size):
+    """Returns image array with batch size of 1 from image path
+
+    Args:
+        img_path (str): path to the image
+        size (tuple): size of the image
+
+    Returns:
+        array: image array with batch size of 1
+    """
     # `img` is a PIL image of size 299x299
     img = tf.keras.preprocessing.image.load_img(img_path, target_size=size)
     # `array` is a float32 Numpy array of shape (299, 299, 3)

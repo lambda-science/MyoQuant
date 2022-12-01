@@ -1,6 +1,9 @@
 import typer
 from rich.console import Console
 
+from .commands.docs import app as docs_app
+from .commands import run_sdh, run_he
+
 console = Console()
 
 app = typer.Typer(
@@ -9,12 +12,8 @@ app = typer.Typer(
     help="MyoQuant Analysis Command Line Interface",
     pretty_exceptions_show_locals=False,
 )
-
-from .commands.docs import app as docs_app
-
 app.add_typer(docs_app, name="docs", help="Generate documentation")
 
-from .commands import run_sdh, run_he
 
 app.registered_commands += (
     run_sdh.app.registered_commands + run_he.app.registered_commands

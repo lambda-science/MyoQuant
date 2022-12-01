@@ -1,3 +1,9 @@
+"""
+CLI Command that automatically generates documentation for the CLI commands 
+including options and args values. 
+Source: https://github.com/tiangolo/typer-cli/pull/67#issuecomment-1271983950
+"""
+
 from pathlib import Path
 from typing import cast
 

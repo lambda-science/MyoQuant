@@ -1,3 +1,6 @@
+"""
+Module that contains the main function to run the mitochondrial distribution analysis for SDH images
+"""
 import time
 from pathlib import Path
 import typer
@@ -66,11 +69,17 @@ def sdh_analysis(
     ),
     export_stats: bool = typer.Option(True, help="Export per fiber stat table."),
 ):
-    """Run the SDH analysis and quantification on the image."""
+    """Run the mitochondiral analysis and quantification on the image.
+    First input arguments and option are printed in stdout and all modules are imported and latest SDH model is downloaded.
+    Then the input image is mask with the binary mask if provided.
+    Then depending on the presence of cellpose path, Cellpose is run or not and mask accordingly if binary mask is provided.
+    Finally the mitochondiral classificaiton is run with run_sdh_analysis() function and the results are saved in the output folder and some info are printed in stdout.
+    """
     start_time = time.time()
     console.print(
-        f"👋 [bold dark_orange]Welcome to the mitochondrial distribution analysis (SDH images)",
+        "👋 [bold dark_orange]Welcome to the mitochondrial distribution analysis (SDH images)",
     )
+    # Print input arguments and options
     console.print(f"📄 INPUT: raw image: {image_path}", style="blue")
 
     if cellpose_path is None:
@@ -85,6 +94,7 @@ def sdh_analysis(
         console.print(f"📄 INPUT: binary mask: {mask_path}", style="blue")
     import os
 
+    # If the model path is not provided, download latest version or check existence.
     if model_path is None:
         console.print(
             "💡 INFO: No SDH model provided, will download or use latest one.",
@@ -106,6 +116,7 @@ def sdh_analysis(
         model_path = model_path_abs
     console.print(f"📄 INPUT: SDH Model: {model_path}", style="blue")
 
+    # Import all modules
     with Progress(
         SpinnerColumn(),
         TextColumn("[progress.description]{task.description}"),
@@ -129,7 +140,7 @@ def sdh_analysis(
 
         try:
             from imageio.v2 import imread
-        except:
+        except ImportError:
             from imageio import imread
 
     if output_path is None:
@@ -138,10 +149,11 @@ def sdh_analysis(
         Path(output_path).mkdir(parents=True, exist_ok=True)
 
     if is_gpu_availiable():
-        console.print(f"💡 INFO: GPU is available.", style="blue")
+        console.print("💡 INFO: GPU is available.", style="blue")
     else:
-        console.print(f"❌ INFO: GPU is not available. Using CPU only.", style="red")
+        console.print("❌ INFO: GPU is not available. Using CPU only.", style="red")
 
+    # Load raw image, binary mask, cellpose and stardist mask if provided.
     with Progress(
         SpinnerColumn(),
         TextColumn("[progress.description]{task.description}"),
@@ -169,6 +181,7 @@ def sdh_analysis(
         if cellpose_path is not None:
             mask_cellpose = imread(cellpose_path)
 
+    # Run Cellpose if no mask provided
     if cellpose_path is None:
         with Progress(
             SpinnerColumn(),
@@ -189,6 +202,7 @@ def sdh_analysis(
             style="green",
         )
 
+    # Load Tensorflow SDH Model
     with Progress(
         SpinnerColumn(),
         TextColumn("[progress.description]{task.description}"),
@@ -202,6 +216,7 @@ def sdh_analysis(
         with HiddenPrints():
             model_SDH = load_sdh_model(model_path)
 
+    # If binary mask provided, mask cellpose mask
     if mask_path is not None:
         with Progress(
             SpinnerColumn(),
@@ -216,6 +231,7 @@ def sdh_analysis(
         mask_ndarray = imread(mask_path)
         mask_cellpose = mask_cellpose * mask_ndarray
 
+    # Run the mitoC distribution analysis and get the results table, label map and dataframes
     with Progress(
         SpinnerColumn(),
         TextColumn("[progress.description]{task.description}"),
@@ -244,6 +260,7 @@ def sdh_analysis(
             overlay_filename = image_path.stem + "_label_blend.tiff"
             overlay_img.save(output_path / overlay_filename)
 
+    # Construct the summary table, print all output in stdout and save files in output folder.
     table.add_column("Feature", justify="left", style="cyan")
     table.add_column("Raw Count", justify="center", style="magenta")
     table.add_column("Proportion (%)", justify="right", style="green")
