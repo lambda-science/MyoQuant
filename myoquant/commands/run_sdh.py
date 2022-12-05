@@ -96,6 +96,8 @@ def sdh_analysis(
 
     # If the model path is not provided, download latest version or check existence.
     if model_path is None:
+        import urllib.request
+
         console.print(
             "💡 INFO: No SDH model provided, will download or use latest one.",
             style="blue",
@@ -124,7 +126,6 @@ def sdh_analysis(
         transient=False,
     ) as progress:
         progress.add_task(description="Importing the libraries...", total=None)
-        import urllib.request
         from ..src.common_func import (
             is_gpu_availiable,
             load_cellpose,
