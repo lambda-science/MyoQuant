@@ -59,11 +59,11 @@ For SDH Staining analysis, you can download this sample image: [HERE](https://ww
 
 1. Example of successful SDH analysis with: `myoquant sdh-analysis sample_sdh.jpg`
 
-![image](https://user-images.githubusercontent.com/20109584/198278737-24d69f61-058e-4a41-a463-68900a0dcbb6.png)
+![image](https://user-images.githubusercontent.com/20109584/210328050-11b0b6d5-28ec-41a4-b9d3-264962d04fa3.png)
 
 2. Example of successful HE analysis with: `myoquant he-analysis sample_he.jpg`
 
-![image](https://user-images.githubusercontent.com/20109584/198280366-1cb424f5-50af-45f9-99d1-34e191fb2e20.png)
+![image](https://user-images.githubusercontent.com/20109584/210328002-6c483ecf-5ba4-4dab-8347-6d71f5726c5e.png)
 
 ## Advanced information
 
