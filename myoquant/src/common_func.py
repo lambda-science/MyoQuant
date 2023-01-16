@@ -105,7 +105,7 @@ def run_cellpose(image, model_cellpose, diameter=None):
     channel = [[0, 0]]
     with torch.no_grad():
         mask_cellpose, _, _, _ = model_cellpose.eval(
-            image, batch_size=1, diameter=diameter, channels=channel
+            image, diameter=diameter, channels=channel
         )
         return mask_cellpose
 
