@@ -169,3 +169,4 @@ debug_data/
 !nuclei.tif
 !cytoplasm.tif
 !binary_mask_sdh.tif
+data/*
