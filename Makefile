@@ -1,9 +1,9 @@
 black:
-	black app
+	black myoquant
 	black tests
 
 black-diff:
-	black app --diff
+	black myoquant --diff
 	black tests --diff
 
 build:
@@ -17,7 +17,7 @@ mkserve:
 	mkdocs serve
 
 mypy:
-	mypy app/ --ignore-missing-imports
+	mypy myoquant/ --ignore-missing-imports
 
 pre-commit: black mypy ruff test
 

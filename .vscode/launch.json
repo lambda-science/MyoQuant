@@ -19,6 +19,14 @@
             "module": "myoquant",
             "justMyCode": true,
             "args": ["he-analysis", "sample_img/sample_he.jpg", "--stardist-path", "sample_img/sample_he_stardist_mask.tiff", "--cellpose-path", "sample_img/sample_he_cellpose_mask.tiff"],
+        },
+        {
+            "name": "ATP Analysis",
+            "type": "python",
+            "request": "launch",
+            "module": "myoquant",
+            "justMyCode": true,
+            "args": ["atp-analysis", "sample_img/sample_atp.jpg", "--cellpose-path", "sample_img/sample_atp_cellpose_mask.tiff"],
         }
     ]
 }

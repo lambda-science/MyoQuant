@@ -7,7 +7,8 @@
 </p>
 
 MyoQuant🔬 is a command-line tool to automatically quantify pathological features in muscle fiber histology images.  
-It is built using CellPose, Stardist, custom neural-network models and image analysis techniques to automatically analyze myopathy histology images. Currently MyoQuant is capable of quantifying centralization of nuclei in muscle fiber with HE staining and anomaly in the mitochondria distribution in muscle fibers with SDH staining.
+It is built using CellPose, Stardist, custom neural-network models and image analysis techniques to automatically analyze myopathy histology images.  
+Currently MyoQuant is capable of quantifying centralization of nuclei in muscle fiber with HE staining, anomaly in the mitochondria distribution in muscle fibers with SDH staining and the number of type 1 muscle fiber vs type 2 muscle fiber with ATP staining.
 
 An online demo with a web interface is available at [https://lbgi.fr/MyoQuant/](https://lbgi.fr/MyoQuant/). This project is free and open-source under the AGPL license, feel free to fork and contribute to the development.
 
@@ -41,6 +42,9 @@ Then you can perform SDH or HE analysis. You can use the command `myoquant --hel
 - **For HE Image Analysis** the command is:  
   `myoquant he-analysis IMAGE_PATH`  
    Don't forget to run `myoquant he-analysis --help` for information about options.
+- **For ATP Image Analysis** the command is:  
+  `myoquant atp-analysis IMAGE_PATH`  
+   Don't forget to run `myoquant atp-analysis --help` for information about options.
 
 _If you're running into an issue such as `myoquant: command not found` please check if you activated your virtual environment with the package installed. And also you can try to run it with the full command: `python -m myoquant sdh-analysis --help`_
 
@@ -55,15 +59,19 @@ Creator and Maintainer: [**Corentin Meyer**, 3rd year PhD Student in the CSTB Te
 ## Examples
 
 For HE Staining analysis, you can download this sample image: [HERE](https://www.lbgi.fr/~meyer/SDH_models/sample_he.jpg)  
-For SDH Staining analysis, you can download this sample image: [HERE](https://www.lbgi.fr/~meyer/SDH_models/sample_sdh.jpg)
+For SDH Staining analysis, you can download this sample image: [HERE](https://www.lbgi.fr/~meyer/SDH_models/sample_sdh.jpg)  
+For ATP Staining analysis, you can download this sample image: [HERE](https://www.lbgi.fr/~meyer/SDH_models/sample_atp.jpg)
 
-1. Example of successful SDH analysis with: `myoquant sdh-analysis sample_sdh.jpg`
+1. Example of successful SDH analysis output with: `myoquant sdh-analysis sample_sdh.jpg`
 
 ![image](https://user-images.githubusercontent.com/20109584/210328050-11b0b6d5-28ec-41a4-b9d3-264962d04fa3.png)
+![image](https://i.imgur.com/4Nlnwdx.png) 2. Example of HE analysis: `myoquant he-analysis sample_he.jpg`
 
-2. Example of successful HE analysis with: `myoquant he-analysis sample_he.jpg`
+![image](https://i.imgur.com/q2cXgIf.png)
 
-![image](https://user-images.githubusercontent.com/20109584/210328002-6c483ecf-5ba4-4dab-8347-6d71f5726c5e.png)
+3. Example of ATP analysis with: `myoquan atp-analysis sample_atp.jpg`
+
+![image](https://i.imgur.com/2ceiOx8.png)
 
 ## Advanced information
 

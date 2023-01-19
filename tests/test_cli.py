@@ -53,3 +53,17 @@ def test_he_analysis_fluo():
     )
     assert result.exit_code == 0
     assert "Analysis Results" in result.stdout
+
+
+def test_atp_analysis():
+    result = runner.invoke(
+        app,
+        [
+            "atp-analysis",
+            "sample_img/sample_atp.jpg",
+            "--cellpose-diameter",
+            80,
+        ],
+    )
+    assert result.exit_code == 0
+    assert "Analysis Results" in result.stdout

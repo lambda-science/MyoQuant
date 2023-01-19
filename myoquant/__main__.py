@@ -2,7 +2,7 @@ import typer
 from rich.console import Console
 
 from .commands.docs import app as docs_app
-from .commands import run_sdh, run_he
+from .commands import run_sdh, run_he, run_atp
 
 console = Console()
 
@@ -16,7 +16,9 @@ app.add_typer(docs_app, name="docs", help="Generate documentation")
 
 
 app.registered_commands += (
-    run_sdh.app.registered_commands + run_he.app.registered_commands
+    run_sdh.app.registered_commands
+    + run_he.app.registered_commands
+    + run_atp.app.registered_commands
 )
 
 if __name__ == "__main__":
