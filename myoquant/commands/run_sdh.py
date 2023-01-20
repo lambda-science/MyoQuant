@@ -164,21 +164,23 @@ def sdh_analysis(
         progress.add_task(description="Reading all inputs...", total=None)
         image_ndarray_sdh = imread(image_path)
 
-    if mask_path is not None:
-        mask_ndarray = imread(mask_path)
-        if np.unique(mask_ndarray).shape[0] != 2:
-            console.print(
-                "The mask image should be a binary image with only 2 values (0 and 1).",
-                style="red",
-            )
-            raise ValueError
-        if len(image_ndarray_sdh.shape) > 2:
-            mask_ndarray = np.repeat(
-                mask_ndarray.reshape(mask_ndarray.shape[0], mask_ndarray.shape[1], 1),
-                image_ndarray_sdh.shape[2],
-                axis=2,
-            )
-        image_ndarray_sdh = image_ndarray_sdh * mask_ndarray
+        if mask_path is not None:
+            mask_ndarray = imread(mask_path)
+            if np.unique(mask_ndarray).shape[0] != 2:
+                console.print(
+                    "The mask image should be a binary image with only 2 values (0 and 1).",
+                    style="red",
+                )
+                raise ValueError
+            if len(image_ndarray_sdh.shape) > 2:
+                mask_ndarray = np.repeat(
+                    mask_ndarray.reshape(
+                        mask_ndarray.shape[0], mask_ndarray.shape[1], 1
+                    ),
+                    image_ndarray_sdh.shape[2],
+                    axis=2,
+                )
+            image_ndarray_sdh = image_ndarray_sdh * mask_ndarray
         if cellpose_path is not None:
             mask_cellpose = imread(cellpose_path)
 

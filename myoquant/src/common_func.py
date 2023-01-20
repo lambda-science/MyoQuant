@@ -130,6 +130,51 @@ def run_stardist(image, model_stardist, nms_thresh=0.4, prob_thresh=0.5):
     return mask_stardist
 
 
+def df_from_cellpose_mask(mask):
+    props_cellpose = regionprops_table(
+        mask,
+        properties=[
+            "label",
+            "area",
+            "centroid",
+            "eccentricity",
+            "bbox",
+            "image",
+            "perimeter",
+            "feret_diameter_max",
+        ],
+    )
+    df_cellpose = pd.DataFrame(props_cellpose)
+    return df_cellpose
+
+
+def df_from_stardist_mask(mask):
+    props_stardist = regionprops_table(
+        mask,
+        properties=[
+            "label",
+            "area",
+            "centroid",
+            "eccentricity",
+            "bbox",
+            "image",
+            "perimeter",
+        ],
+    )
+    df_stardist = pd.DataFrame(props_stardist)
+    return df_stardist
+
+
+def extract_single_image(raw_image, df_props, index):
+    single_entity_img = raw_image[
+        df_props.iloc[index, 5] : df_props.iloc[index, 7],
+        df_props.iloc[index, 6] : df_props.iloc[index, 8],
+    ].copy()
+    single_entity_mask = df_props.iloc[index, 9]
+    single_entity_img[~single_entity_mask] = 0
+    return single_entity_img
+
+
 def label2rgb(img_ndarray, label_map):
     """Convert a label map to RGB image
 

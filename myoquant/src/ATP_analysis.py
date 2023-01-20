@@ -44,6 +44,25 @@ def estimate_threshold(intensity_list):
     return threshold
 
 
+def plot_density(all_cell_median_intensity, intensity_threshold):
+    if intensity_threshold == 0:
+        intensity_threshold = estimate_threshold(all_cell_median_intensity)
+    fig, ax = plt.subplots(figsize=(10, 5))
+    density = gaussian_kde(all_cell_median_intensity)
+    density.covariance_factor = lambda: 0.25
+    density._compute_covariance()
+
+    # Create a vector of 256 values going from 0 to 256:
+    xs = np.linspace(0, 255, 256)
+    density_xs_values = density(xs)
+    ax.plot(xs, density_xs_values, label="Estimated Density")
+    ax.axvline(x=intensity_threshold, color="red", label="Threshold")
+    ax.set_xlabel("Pixel Intensity")
+    ax.set_ylabel("Density")
+    ax.legend()
+    return fig
+
+
 def predict_all_cells(histo_img, cellpose_df, intensity_threshold):
     all_cell_median_intensity = get_all_intensity(histo_img, cellpose_df)
     if intensity_threshold is None:

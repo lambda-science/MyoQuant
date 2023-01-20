@@ -45,6 +45,7 @@ def single_cell_analysis(
     y_fiber,
     cell_label,
     internalised_threshold=0.75,
+    draw_and_return=False,
 ):
     n_nuc, n_nuc_intern, n_nuc_periph = 0, 0, 0
     new_row_lst = []
