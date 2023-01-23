@@ -13,6 +13,8 @@ from stardist.models import StarDist2D
 from tensorflow import keras
 import numpy as np
 from PIL import Image
+from skimage.measure import regionprops_table
+import pandas as pd
 
 # from .gradcam import make_gradcam_heatmap, save_and_display_gradcam
 from .random_brightness import RandomBrightness
@@ -148,9 +150,10 @@ def df_from_cellpose_mask(mask):
     return df_cellpose
 
 
-def df_from_stardist_mask(mask):
+def df_from_stardist_mask(mask, intensity_image=None):
     props_stardist = regionprops_table(
         mask,
+        intensity_image=intensity_image,
         properties=[
             "label",
             "area",

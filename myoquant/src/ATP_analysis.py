@@ -2,7 +2,7 @@ import pandas as pd
 from skimage.measure import regionprops_table
 from scipy.stats import gaussian_kde
 from sklearn.mixture import GaussianMixture
-
+from .common_func import extract_single_image, df_from_cellpose_mask
 import numpy as np
 
 labels_predict = {1: "fiber type 1", 2: "fiber type 2"}
@@ -12,13 +12,8 @@ np.random.seed(42)
 def get_all_intensity(image_array, df_cellpose):
     all_cell_median_intensity = []
     for index in range(len(df_cellpose)):
-        single_cell_img = image_array[
-            df_cellpose.iloc[index, 5] : df_cellpose.iloc[index, 7],
-            df_cellpose.iloc[index, 6] : df_cellpose.iloc[index, 8],
-        ].copy()
+        single_cell_img = extract_single_image(image_array, df_cellpose, index)
 
-        single_cell_mask = df_cellpose.iloc[index, 9].copy()
-        single_cell_img[~single_cell_mask] = 0
         # Calculate median pixel intensity of the cell but ignore 0 values
         single_cell_median_intensity = np.median(single_cell_img[single_cell_img > 0])
         all_cell_median_intensity.append(single_cell_median_intensity)
@@ -95,19 +90,7 @@ def paint_full_image(image_atp, df_cellpose, class_predicted_all):
 
 
 def run_atp_analysis(image_array, mask_cellpose, intensity_threshold=None):
-    props_cellpose = regionprops_table(
-        mask_cellpose,
-        properties=[
-            "label",
-            "area",
-            "centroid",
-            "eccentricity",
-            "bbox",
-            "image",
-            "perimeter",
-        ],
-    )
-    df_cellpose = pd.DataFrame(props_cellpose)
+    df_cellpose = df_from_cellpose_mask(mask_cellpose)
     class_predicted_all, intensity_all = predict_all_cells(
         image_array, df_cellpose, intensity_threshold
     )

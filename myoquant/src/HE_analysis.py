@@ -1,39 +1,27 @@
 import numpy as np
 import pandas as pd
 from skimage.draw import line
-from skimage.measure import regionprops_table
-
-from .draw_line import *
+from .common_func import (
+    extract_single_image,
+    df_from_cellpose_mask,
+    df_from_stardist_mask,
+)
+from .draw_line import (
+    line_equation,
+    calculate_intersection,
+    calculate_closest_point,
+    calculate_distance,
+)
+import matplotlib.pyplot as plt
 
 
 def extract_ROIs(histo_img, index, cellpose_df, mask_stardist):
-    single_cell_img = histo_img[
-        cellpose_df.iloc[index, 5] : cellpose_df.iloc[index, 7],
-        cellpose_df.iloc[index, 6] : cellpose_df.iloc[index, 8],
-    ].copy()
-    nucleus_single_cell_img = mask_stardist[
-        cellpose_df.iloc[index, 5] : cellpose_df.iloc[index, 7],
-        cellpose_df.iloc[index, 6] : cellpose_df.iloc[index, 8],
-    ].copy()
+    single_cell_img = extract_single_image(histo_img, cellpose_df, index)
+    nucleus_single_cell_img = extract_single_image(mask_stardist, cellpose_df, index)
     single_cell_mask = cellpose_df.iloc[index, 9]
-    single_cell_img[~single_cell_mask] = 0
-    nucleus_single_cell_img[~single_cell_mask] = 0
-
-    props_nuc_single = regionprops_table(
-        nucleus_single_cell_img,
-        intensity_image=single_cell_img,
-        properties=[
-            "label",
-            "area",
-            "centroid",
-            "eccentricity",
-            "bbox",
-            "image",
-            "perimeter",
-            "feret_diameter_max",
-        ],
+    df_nuc_single = df_from_stardist_mask(
+        nucleus_single_cell_img, intensity_image=single_cell_img
     )
-    df_nuc_single = pd.DataFrame(props_nuc_single)
     return single_cell_img, nucleus_single_cell_img, single_cell_mask, df_nuc_single
 
 
@@ -47,6 +35,11 @@ def single_cell_analysis(
     internalised_threshold=0.75,
     draw_and_return=False,
 ):
+    if draw_and_return:
+        fig_size = (5, 5)
+        f, ax = plt.subplots(figsize=fig_size)
+        ax.scatter(x_fiber, y_fiber, color="white")
+
     n_nuc, n_nuc_intern, n_nuc_periph = 0, 0, 0
     new_row_lst = []
     new_col_names = df_nuc_single.columns.tolist()
@@ -54,6 +47,8 @@ def single_cell_analysis(
     new_col_names.append("score_eccentricity")
     new_col_names.append("cell label")
     for _, value in df_nuc_single.iterrows():
+        if draw_and_return:
+            ax.scatter(value[3], value[2], color="red")
         n_nuc += 1
         value = value.tolist()
         # Extend line and find closest point
@@ -69,6 +64,21 @@ def single_cell_analysis(
             m, b, (single_cell_img.shape[0], single_cell_img.shape[1])
         )
         border_point = calculate_closest_point(value[3], value[2], intersections_lst)
+        if draw_and_return:
+            ax.plot(
+                (x_fiber, border_point[0]),
+                (y_fiber, border_point[1]),
+                "ro--",
+                linewidth=1,
+                markersize=1,
+            )
+            ax.plot(
+                (x_fiber, value[3]),
+                (y_fiber, value[2]),
+                "go--",
+                linewidth=1,
+                markersize=1,
+            )
         rr, cc = line(
             int(y_fiber),
             int(x_fiber),
@@ -96,6 +106,8 @@ def single_cell_analysis(
                         value.append(ratio_dist)
                         value.append(cell_label)
                     new_row_lst.append(value)
+                    if draw_and_return:
+                        ax.scatter(coords[1], coords[0], color="red", s=10)
                     break
             except IndexError:
                 coords = list(zip(rr, cc))[index3 - 1]
@@ -115,8 +127,13 @@ def single_cell_analysis(
                     value.append(ratio_dist)
                     value.append(cell_label)
                 new_row_lst.append(value)
+                if draw_and_return:
+                    ax.scatter(coords[1], coords[0], color="red", s=10)
+                    ax.axis("off")
                 break
     df_nuc_single_stats = pd.DataFrame(new_row_lst, columns=new_col_names)
+    if draw_and_return:
+        return n_nuc, n_nuc_intern, n_nuc_periph, df_nuc_single_stats, ax
     return n_nuc, n_nuc_intern, n_nuc_periph, df_nuc_single_stats
 
 
@@ -173,20 +190,7 @@ def paint_histo_img(histo_img, cellpose_df, prediction_df):
 
 
 def run_he_analysis(image_ndarray, mask_cellpose, mask_stardist, eccentricity_thresh):
-    props_cellpose = regionprops_table(
-        mask_cellpose,
-        properties=[
-            "label",
-            "area",
-            "centroid",
-            "eccentricity",
-            "bbox",
-            "image",
-            "perimeter",
-            "feret_diameter_max",
-        ],
-    )
-    df_cellpose = pd.DataFrame(props_cellpose)
+    df_cellpose = df_from_cellpose_mask(mask_cellpose)
     df_nuc_analysis, all_nuc_df_stats = predict_all_cells(
         image_ndarray, df_cellpose, mask_stardist, eccentricity_thresh
     )
