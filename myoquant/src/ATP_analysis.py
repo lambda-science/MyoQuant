@@ -1,9 +1,9 @@
 import pandas as pd
-from skimage.measure import regionprops_table
 from scipy.stats import gaussian_kde
 from sklearn.mixture import GaussianMixture
 from .common_func import extract_single_image, df_from_cellpose_mask
 import numpy as np
+import matplotlib.pyplot as plt
 
 labels_predict = {1: "fiber type 1", 2: "fiber type 2"}
 np.random.seed(42)
