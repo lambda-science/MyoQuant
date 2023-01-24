@@ -4,9 +4,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 import pandas as pd
 import tensorflow as tf
-from rich.progress import track
-from skimage.measure import regionprops_table
-
+from .common_func import extract_single_image, df_from_cellpose_mask
 from .gradcam import make_gradcam_heatmap, save_and_display_gradcam
 import numpy as np
 
@@ -32,14 +30,7 @@ def resize_batch_cells(histo_img, cellpose_df):
     img_array_full = np.empty((len(cellpose_df), 256, 256, 3))
     # for index in track(range(len(cellpose_df)), description="Resizing cells"):
     for index in range(len(cellpose_df)):
-        single_cell_img = histo_img[
-            cellpose_df.iloc[index, 5] : cellpose_df.iloc[index, 7],
-            cellpose_df.iloc[index, 6] : cellpose_df.iloc[index, 8],
-        ].copy()
-
-        single_cell_mask = cellpose_df.iloc[index, 9].copy()
-        single_cell_img[~single_cell_mask] = 0
-
+        single_cell_img = extract_single_image(histo_img, cellpose_df, index)
         img_array_full[index] = tf.image.resize(single_cell_img, (256, 256))
     return img_array_full
 
@@ -54,7 +45,9 @@ def predict_all_cells(histo_img, cellpose_df, _model_SDH):
         predicted_class_array[index_counter] = prediction_result.argmax()
         predicted_proba_array[index_counter] = np.amax(prediction_result)
         index_counter += 1
-    return predicted_class_array, predicted_proba_array
+    cellpose_df["class_predicted"] = predicted_class_array
+    cellpose_df["proba_predicted"] = predicted_proba_array
+    return cellpose_df
 
 
 def paint_full_image(image_sdh, df_cellpose, class_predicted_all):
@@ -78,43 +71,28 @@ def paint_full_image(image_sdh, df_cellpose, class_predicted_all):
 
 
 def run_sdh_analysis(image_array, model_SDH, mask_cellpose):
-    props_cellpose = regionprops_table(
-        mask_cellpose,
-        properties=[
-            "label",
-            "area",
-            "centroid",
-            "eccentricity",
-            "bbox",
-            "image",
-            "perimeter",
-        ],
-    )
-    df_cellpose = pd.DataFrame(props_cellpose)
-    class_predicted_all, proba_predicted_all = predict_all_cells(
-        image_array, df_cellpose, model_SDH
-    )
-    df_cellpose["class_predicted"] = class_predicted_all
-    df_cellpose["proba_predicted"] = proba_predicted_all
-    count_per_label = np.unique(class_predicted_all, return_counts=True)
-    class_and_proba_df = pd.DataFrame(
-        list(zip(class_predicted_all, proba_predicted_all)),
-        columns=["class", "proba"],
-    )
+    df_cellpose = df_from_cellpose_mask(mask_cellpose)
+
+    df_cellpose = predict_all_cells(image_array, df_cellpose, model_SDH)
+    count_per_label = np.unique(df_cellpose["class_predicted"], return_counts=True)
 
     # Result table dict
     headers = ["Feature", "Raw Count", "Proportion (%)"]
     data = []
-    data.append(["Muscle Fibers", len(class_predicted_all), 100])
+    data.append(["Muscle Fibers", len(df_cellpose["class_predicted"]), 100])
     for elem in count_per_label[0]:
         data.append(
             [
                 labels_predict[int(elem)],
                 count_per_label[1][int(elem)],
-                100 * count_per_label[1][int(elem)] / len(class_predicted_all),
+                100
+                * count_per_label[1][int(elem)]
+                / len(df_cellpose["class_predicted"]),
             ]
         )
     result_df = pd.DataFrame(columns=headers, data=data)
     # Paint The Full Image
-    full_label_map = paint_full_image(image_array, df_cellpose, class_predicted_all)
+    full_label_map = paint_full_image(
+        image_array, df_cellpose, df_cellpose["class_predicted"]
+    )
     return result_df, full_label_map, df_cellpose
