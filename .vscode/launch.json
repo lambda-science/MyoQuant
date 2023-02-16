@@ -26,7 +26,7 @@
             "request": "launch",
             "module": "myoquant",
             "justMyCode": true,
-            "args": ["atp-analysis", "sample_img/sample_atp.jpg", "--cellpose-path", "sample_img/sample_atp_cellpose_mask.tiff"],
+            "args": ["atp-analysis", "sample_img/sample_atp.jpg", "--cellpose-path", "sample_img/sample_atp_cellpose_mask.tiff", "--intensity-method", "mean", "--n-classes", "2", "--erosion"],
         }
     ]
 }

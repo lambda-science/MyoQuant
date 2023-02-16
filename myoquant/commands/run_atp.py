@@ -59,6 +59,23 @@ def atp_analysis(
         None,
         help="Approximative single cell diameter in pixel for CellPose detection. If not specified, Cellpose will try to deduce it.",
     ),
+    channel: int = typer.Option(
+        None,
+        help="Image channel to use for the analysis. If not specified, the analysis will be performed on all three channels.",
+    ),
+    n_classes: int = typer.Option(
+        2,
+        max=10,
+        help="The number of classes of cell to detect. If not specified this is defaulted to two classes.",
+    ),
+    intensity_method: str = typer.Option(
+        "median",
+        help="The method to use to compute the intensity of the cell. Can be either 'median' or 'mean'.",
+    ),
+    erosion: bool = typer.Option(
+        False,
+        help="Perform an erosion on the cells images to remove signal in the cell membrane (usefull for fluo)",
+    ),
     export_map: bool = typer.Option(
         True,
         help="Export the original image with cells painted by classification label.",
@@ -135,6 +152,8 @@ def atp_analysis(
     ) as progress:
         progress.add_task(description="Reading all inputs...", total=None)
         image_ndarray = imread(image_path)
+        if channel is not None:
+            image_ndarray = image_ndarray[:, :, channel]
 
         if mask_path is not None:
             mask_ndarray = imread(mask_path)
@@ -200,8 +219,13 @@ def atp_analysis(
         transient=False,
     ) as progress:
         progress.add_task(description="Detecting fiber types...", total=None)
-        result_df, full_label_map, df_cellpose_details = run_atp_analysis(
-            image_ndarray, mask_cellpose, intensity_threshold
+        result_df, full_label_map, df_cellpose_details, fig = run_atp_analysis(
+            image_ndarray,
+            mask_cellpose,
+            intensity_threshold,
+            n_classes,
+            intensity_method,
+            erosion,
         )
     if export_map:
         with Progress(
@@ -214,7 +238,12 @@ def atp_analysis(
                 description="Blending label and original image together...", total=None
             )
             labelRGB_map = label2rgb(image_ndarray, full_label_map)
-            overlay_img = blend_image_with_label(image_ndarray, labelRGB_map)
+            if channel is not None:
+                overlay_img = blend_image_with_label(
+                    image_ndarray, labelRGB_map, fluo=True
+                )
+            else:
+                overlay_img = blend_image_with_label(image_ndarray, labelRGB_map)
             overlay_filename = image_path.stem + "_label_blend.tiff"
             overlay_img.save(output_path / overlay_filename)
 
@@ -238,6 +267,11 @@ def atp_analysis(
     console.print(
         f"💾 OUTPUT: Summary Table saved as {output_path/csv_name}",
         style="green",
+    )
+    plot_name = image_path.stem + "_intensity_plot.png"
+    fig.savefig(output_path / plot_name)
+    console.print(
+        f"💾 OUTPUT: Intensity Plot saved as {output_path/plot_name}", style="green"
     )
     if export_map:
         console.print(

@@ -5,6 +5,8 @@ import os
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 import sys
+import math
+
 import tensorflow as tf
 import torch
 from cellpose.models import Cellpose
@@ -14,10 +16,13 @@ from tensorflow import keras
 import numpy as np
 from PIL import Image
 from skimage.measure import regionprops_table
+from skimage.morphology import binary_erosion
 import pandas as pd
 
 # from .gradcam import make_gradcam_heatmap, save_and_display_gradcam
 from .random_brightness import RandomBrightness
+
+import imageio
 
 tf.random.set_seed(42)
 np.random.seed(42)
@@ -168,12 +173,21 @@ def df_from_stardist_mask(mask, intensity_image=None):
     return df_stardist
 
 
-def extract_single_image(raw_image, df_props, index):
+def extract_single_image(raw_image, df_props, index, erosion=False):
     single_entity_img = raw_image[
         df_props.iloc[index, 5] : df_props.iloc[index, 7],
         df_props.iloc[index, 6] : df_props.iloc[index, 8],
     ].copy()
+    surface_area = df_props.iloc[index, 1]
+    cell_radius = math.sqrt(surface_area / math.pi)
     single_entity_mask = df_props.iloc[index, 9]
+    erosion_size = int(cell_radius / 5)  # 20% of the cell
+    if erosion:
+        for i in range(erosion_size):
+            single_entity_mask = binary_erosion(
+                single_entity_mask, out=single_entity_mask
+            )
+
     single_entity_img[~single_entity_mask] = 0
     return single_entity_img
 
@@ -192,6 +206,14 @@ def label2rgb(img_ndarray, label_map):
         0: [255, 255, 255],
         1: [15, 157, 88],
         2: [219, 68, 55],
+        3: [100, 128, 170],
+        4: [231, 204, 143],
+        5: [202, 137, 115],
+        6: [178, 143, 172],
+        7: [144, 191, 207],
+        8: [148, 187, 187],
+        9: [78, 86, 105],
+        10: [245, 90, 87],
     }
     img_rgb = np.zeros((img_ndarray.shape[0], img_ndarray.shape[1], 3), dtype=np.uint8)
 
