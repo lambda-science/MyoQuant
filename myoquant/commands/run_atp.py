@@ -63,6 +63,14 @@ def atp_analysis(
         None,
         help="Image channel to use for the analysis. If not specified, the analysis will be performed on all three channels.",
     ),
+    channel_first: bool = typer.Option(
+        False,
+        help="If the channel is the first dimension of the image, set this to True. False by default.",
+    ),
+    rescale_exposure: bool = typer.Option(
+        False,
+        help="Rescale the image exposure if your image is not in the 0 255 forma, False by default.",
+    ),
     n_classes: int = typer.Option(
         2,
         max=10,
@@ -72,9 +80,10 @@ def atp_analysis(
         "median",
         help="The method to use to compute the intensity of the cell. Can be either 'median' or 'mean'.",
     ),
-    erosion: bool = typer.Option(
+    erosion: int = typer.Option(
         False,
-        help="Perform an erosion on the cells images to remove signal in the cell membrane (usefull for fluo)",
+        max=45,
+        help="Perform an erosion on the cells images to remove signal in the cell membrane (usefull for fluo). Expressed in percentage of the cell radius",
     ),
     export_map: bool = typer.Option(
         True,
@@ -127,6 +136,7 @@ def atp_analysis(
         from ..src.ATP_analysis import run_atp_analysis
         import numpy as np
         from PIL import Image
+        from skimage.exposure import rescale_intensity
 
         try:
             from imageio.v2 import imread
@@ -153,8 +163,16 @@ def atp_analysis(
         progress.add_task(description="Reading all inputs...", total=None)
         image_ndarray = imread(image_path)
         if channel is not None:
-            image_ndarray = image_ndarray[:, :, channel]
-
+            if channel_first:
+                # Put the channel as third dimension instead of first
+                image_ndarray = np.moveaxis(image_ndarray, 0, -1)
+        image_ndarray = image_ndarray[:, :, channel]
+        if rescale_exposure:
+            image_ndarray = rescale_intensity(
+                image_ndarray,
+                in_range=(np.amin(image_ndarray), np.amax(image_ndarray)),
+                out_range=np.uint8,
+            )
         if mask_path is not None:
             mask_ndarray = imread(mask_path)
             if np.unique(mask_ndarray).shape[0] != 2:

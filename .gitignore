@@ -170,4 +170,4 @@ debug_data/
 !cytoplasm.tif
 !binary_mask_sdh.tif
 data/*
-sample_atp_intensity_plot.png
+*intensity_plot.png

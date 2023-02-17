@@ -14,7 +14,7 @@ np.random.seed(42)
 
 
 def get_all_intensity(
-    image_array, df_cellpose, intensity_method="median", erosion=False
+    image_array, df_cellpose, intensity_method="median", erosion=None
 ):
     all_cell_median_intensity = []
     for index in range(len(df_cellpose)):
@@ -97,7 +97,7 @@ def predict_all_cells(
     intensity_threshold,
     n_classes=2,
     intensity_method="median",
-    erosion=False,
+    erosion=None,
 ):
     all_cell_median_intensity = get_all_intensity(
         histo_img, cellpose_df, intensity_method, erosion
@@ -146,7 +146,7 @@ def run_atp_analysis(
     intensity_threshold=None,
     n_classes=2,
     intensity_method="median",
-    erosion=False,
+    erosion=None,
 ):
     df_cellpose = df_from_cellpose_mask(mask_cellpose)
     class_predicted_all, intensity_all, intensity_threshold = predict_all_cells(

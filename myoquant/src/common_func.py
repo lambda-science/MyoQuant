@@ -173,17 +173,19 @@ def df_from_stardist_mask(mask, intensity_image=None):
     return df_stardist
 
 
-def extract_single_image(raw_image, df_props, index, erosion=False):
+def extract_single_image(raw_image, df_props, index, erosion=None):
     single_entity_img = raw_image[
         df_props.iloc[index, 5] : df_props.iloc[index, 7],
         df_props.iloc[index, 6] : df_props.iloc[index, 8],
     ].copy()
     surface_area = df_props.iloc[index, 1]
     cell_radius = math.sqrt(surface_area / math.pi)
-    single_entity_mask = df_props.iloc[index, 9]
-    erosion_size = int(cell_radius / 5)  # 20% of the cell
-    if erosion:
-        for i in range(erosion_size):
+    single_entity_mask = df_props.iloc[index, 9].copy()
+    erosion_size = cell_radius * (
+        erosion / 100
+    )  # Erosion in percentage of the cell radius
+    if erosion is not None:
+        for i in range(int(erosion_size)):
             single_entity_mask = binary_erosion(
                 single_entity_mask, out=single_entity_mask
             )
