@@ -166,7 +166,7 @@ def atp_analysis(
             if channel_first:
                 # Put the channel as third dimension instead of first
                 image_ndarray = np.moveaxis(image_ndarray, 0, -1)
-        image_ndarray = image_ndarray[:, :, channel]
+            image_ndarray = image_ndarray[:, :, channel]
         if rescale_exposure:
             image_ndarray = rescale_intensity(
                 image_ndarray,

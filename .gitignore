@@ -171,3 +171,4 @@ debug_data/
 !binary_mask_sdh.tif
 data/*
 *intensity_plot.png
+*.idea

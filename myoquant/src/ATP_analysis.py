@@ -33,7 +33,7 @@ def get_all_intensity(
 
 def estimate_threshold(intensity_list, n_classes=2):
     density = gaussian_kde(intensity_list)
-    density.covariance_factor = lambda: 0.25
+    density.covariance_factor = lambda: 0.05
     density._compute_covariance()
 
     # Create a vector of 256 values going from 0 to 256:
@@ -64,13 +64,16 @@ def plot_density(all_cell_median_intensity, intensity_threshold, n_classes=2):
         intensity_threshold = estimate_threshold(all_cell_median_intensity, n_classes)
     fig, ax = plt.subplots(figsize=(10, 5))
     density = gaussian_kde(all_cell_median_intensity)
-    density.covariance_factor = lambda: 0.25
+    density.covariance_factor = lambda: 0.1
     density._compute_covariance()
 
-    # Create a vector of 256 values going from 0 to 256:
+    # Create a vector of 256 values going from 0 to 25
     xs = np.linspace(0, 255, 256)
     density_xs_values = density(xs)
-    ax.plot(xs, density_xs_values, label="Estimated Density")
+    ax.hist(
+        all_cell_median_intensity, bins=255, density=True, alpha=0.5, label="Histogram"
+    )
+    ax.plot(xs, density_xs_values, label="Estimated Density", linewidth=3)
     for values in intensity_threshold:
         ax.axvline(x=values, color="red", label="Threshold")
     ax.set_xlabel("Pixel Intensity")
