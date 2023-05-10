@@ -181,10 +181,10 @@ def extract_single_image(raw_image, df_props, index, erosion=None):
     surface_area = df_props.iloc[index, 1]
     cell_radius = math.sqrt(surface_area / math.pi)
     single_entity_mask = df_props.iloc[index, 9].copy()
-    erosion_size = cell_radius * (
-        erosion / 100
-    )  # Erosion in percentage of the cell radius
     if erosion is not None:
+        erosion_size = cell_radius * (
+            erosion / 100
+        )  # Erosion in percentage of the cell radius
         for i in range(int(erosion_size)):
             single_entity_mask = binary_erosion(
                 single_entity_mask, out=single_entity_mask

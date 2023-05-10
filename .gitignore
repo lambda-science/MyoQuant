@@ -172,3 +172,5 @@ debug_data/
 data/*
 *intensity_plot.png
 *.idea
+cellpose.sh
+nohup.out
