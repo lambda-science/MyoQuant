@@ -10,6 +10,7 @@ $ myoquant [OPTIONS] COMMAND [ARGS]...
 
 **Options**:
 
+- `--version`
 - `--help`: Show this message and exit.
 
 **Commands**:
@@ -43,6 +44,12 @@ $ myoquant atp-analysis [OPTIONS] IMAGE_PATH
 - `--output-path PATH`: The path to the folder to save the results. Will save in the same folder as input image if not specified.
 - `--intensity-threshold INTEGER RANGE`: Fiber intensity threshold to differenciate between the two fiber types. If not specified, the analysis will try to deduce it. [1<=x<=254]
 - `--cellpose-diameter INTEGER`: Approximative single cell diameter in pixel for CellPose detection. If not specified, Cellpose will try to deduce it.
+- `--channel INTEGER`: Image channel to use for the analysis. If not specified, the analysis will be performed on all three channels.
+- `--channel-first / --no-channel-first`: If the channel is the first dimension of the image, set this to True. False by default. [default: no-channel-first]
+- `--rescale-exposure / --no-rescale-exposure`: Rescale the image exposure if your image is not in the 0 255 forma, False by default. [default: no-rescale-exposure]
+- `--n-classes INTEGER RANGE`: The number of classes of cell to detect. If not specified this is defaulted to two classes. [default: 2; x<=10]
+- `--intensity-method TEXT`: The method to use to compute the intensity of the cell. Can be either 'median' or 'mean'. [default: median]
+- `--erosion INTEGER RANGE`: Perform an erosion on the cells images to remove signal in the cell membrane (usefull for fluo). Expressed in percentage of the cell radius [default: False; x<=45]
 - `--export-map / --no-export-map`: Export the original image with cells painted by classification label. [default: export-map]
 - `--export-stats / --no-export-stats`: Export per fiber and per nuclei stat table. [default: export-stats]
 - `--help`: Show this message and exit.
