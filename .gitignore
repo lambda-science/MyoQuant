@@ -170,3 +170,7 @@ debug_data/
 !cytoplasm.tif
 !binary_mask_sdh.tif
 data/*
+*intensity_plot.png
+*.idea
+cellpose.sh
+nohup.out
