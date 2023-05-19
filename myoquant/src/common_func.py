@@ -7,8 +7,9 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 import sys
 import math
 
-import tensorflow as tf
 import torch
+import tensorflow as tf
+
 from cellpose.models import Cellpose
 from csbdeep.utils import normalize
 from stardist.models import StarDist2D
