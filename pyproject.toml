@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "myoquant"
-version = "0.3.3"
+version = "0.3.4"
 description = "MyoQuant🔬: a tool to automatically quantify pathological features in muscle fiber histology images."
 authors = ["Corentin Meyer <corentin.meyer@etu.unistra.fr>"]
 maintainers = ["Corentin Meyer <corentin.meyer@etu.unistra.fr>"]
