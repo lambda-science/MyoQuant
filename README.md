@@ -54,7 +54,7 @@ _If you're running into an issue such as `myoquant: command not found` please ch
 
 ## Contact
 
-Creator and Maintainer: [**Corentin Meyer**, 3rd year PhD Student in the CSTB Team, ICube — CNRS — Unistra](https://cmeyer.fr) <corentin.meyer@etu.unistra.fr>
+Creator and Maintainer: [**Corentin Meyer**, PhD in Biomedical AI](https://cmeyer.fr) <contact@cmeyer.fr>
 
 ## Citing MyoQuant🔬
 
