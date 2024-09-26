@@ -27,11 +27,11 @@ def get_img_array(img_path, size):
     return array
 
 
-def make_gradcam_heatmap(img_array, _model, last_conv_layer_name, pred_index=None):
+def make_gradcam_heatmap(img_array, model, last_conv_layer_name, pred_index=None):
     # First, we create a model that maps the input image to the activations
     # of the last conv layer as well as the output predictions
     grad_model = tf.keras.models.Model(
-        [_model.inputs], [_model.get_layer(last_conv_layer_name).output, _model.output]
+        [model.inputs], [model.get_layer(last_conv_layer_name).output, model.output]
     )
 
     # Then, we compute the gradient of the top predicted class for our input image
@@ -53,8 +53,11 @@ def make_gradcam_heatmap(img_array, _model, last_conv_layer_name, pred_index=Non
     # We multiply each channel in the feature map array
     # by "how important this channel is" with regard to the top predicted class
     # then sum all the channels to obtain the heatmap class activation
-    last_conv_layer_output = last_conv_layer_output[0]
-    heatmap = last_conv_layer_output @ pooled_grads[..., tf.newaxis]
+    if isinstance(last_conv_layer_output, np.ndarray):
+        last_conv_layer_output_np = last_conv_layer_output
+    else:
+        last_conv_layer_output_np = last_conv_layer_output.numpy()
+    heatmap = last_conv_layer_output_np @ pooled_grads[..., tf.newaxis]
     heatmap = tf.squeeze(heatmap)
 
     # For visualization purpose, we will also normalize the heatmap between 0 & 1
