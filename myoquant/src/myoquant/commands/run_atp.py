@@ -271,9 +271,9 @@ def atp_analysis(
     table.add_column("Proportion (%)", justify="right", style="green")
     for index, row in result_df.iterrows():
         table.add_row(
-            str(row[0]),
-            str(row[1]),
-            str(row[2]),
+            str(row.iloc[0]),
+            str(row.iloc[1]),
+            str(row.iloc[2]),
         )
     console.print(table)
     csv_name = image_path.stem + "_results_summary.csv"

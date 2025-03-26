@@ -91,9 +91,21 @@ def load_sdh_model(model_path: str):
     Returns:
         Keras model instance: tensorflow keras model
     """
+    # Load the model without compiling to avoid issues with 'reduction=auto' in Keras 3
     model_sdh = keras.models.load_model(
-        model_path, custom_objects={"RandomBrightness": keras.layers.RandomBrightness(factor=0.2)}
+        model_path, 
+        custom_objects={"RandomBrightness": keras.layers.RandomBrightness(factor=0.2)},
+        compile=False
     )
+
+    # Recompile the model with valid parameters for Keras 3
+    # You may need to adjust the optimizer, loss, and metrics based on your original model
+    model_sdh.compile(
+        optimizer='adam',
+        loss='categorical_crossentropy',
+        metrics=['accuracy']
+    )
+
     return model_sdh
 
 
