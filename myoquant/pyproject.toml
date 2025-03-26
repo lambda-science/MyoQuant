@@ -1,0 +1,55 @@
+[project]
+name = "myoquant"
+version = "0.3.5"
+description = "MyoQuant🔬: a tool to automatically quantify pathological features in muscle fiber histology images."
+authors = [{name="Corentin Meyer", email="contact@cmeyer.fr"}]
+maintainers = [{name="Corentin Meyer", email="contact@cmeyer.fr"}]
+license = "AGPL-3.0-or-later"
+readme = "README.md"
+homepage = "https://lbgi.fr/MyoQuant/"
+repository = "https://github.com/lambda-science/MyoQuant"
+keywords = ["histology", "quantification", "biology","deep-learning"]
+requires-python = "<3.13, >=3.10"
+dependencies = [
+    "tensorflow>=2.19.0",
+    "keras>=3.9.0",
+    "cellpose>=3.1.1.1",
+    "stardist>=0.9.1",
+    "numpy<=2.1.0",
+    "csbdeep>=0.8.1",
+    "imageio>=2.37.0",
+    "scikit-image>=0.25.2",
+    "pandas>=2.2.3",
+    "typer>=0.15.2",
+    "rich>=13.9.4",
+    "seaborn>=0.13.2",
+    "scikit-learn>=1.6.1",
+    "textual>=2.1.2"
+]
+
+[project.scripts]
+myoquant = "myoquant.__main__:app"
+
+[tool.uv]
+dev-dependencies = [
+    "ruff",
+    "mkdocs-material",
+    "ipykernel",
+    "pytest",
+    "pre-commit",
+    "mkdocstrings",
+    "mypy",
+]
+
+[project.urls]
+Homepage = "https://github.com/lambda-science/MyoQuant"
+Documentation = "https://github.com/lambda-science/MyoQuant/blob/main/CLI_Documentation.md"
+Repository = "https://github.com/lambda-science/MyoQuant"
+Issues = "https://github.com/lambda-science/MyoQuant/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/myoquant"]

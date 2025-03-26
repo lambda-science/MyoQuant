@@ -4,8 +4,8 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 import pandas as pd
 import tensorflow as tf
-from .common_func import extract_single_image, df_from_cellpose_mask
-from .gradcam import make_gradcam_heatmap, save_and_display_gradcam
+from myoquant.common_func import extract_single_image, df_from_cellpose_mask
+from myoquant.gradcam import make_gradcam_heatmap, save_and_display_gradcam
 import numpy as np
 
 labels_predict = ["control", "sick"]

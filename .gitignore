@@ -153,8 +153,6 @@ cython_debug/
 
 # Custom Corentin
 *.html
-MyoQuant
-EHRoes
 *.h5
 log
 pid
@@ -174,3 +172,4 @@ data/*
 *.idea
 cellpose.sh
 nohup.out
+*/.venv

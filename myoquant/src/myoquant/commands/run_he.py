@@ -135,7 +135,7 @@ def he_analysis(
         transient=False,
     ) as progress:
         progress.add_task(description="Importing the libraries...", total=None)
-        from ..src.common_func import (
+        from myoquant.common_func import (
             is_gpu_availiable,
             load_cellpose,
             load_stardist,
@@ -145,7 +145,7 @@ def he_analysis(
             blend_image_with_label,
             HiddenPrints,
         )
-        from ..src.HE_analysis import run_he_analysis
+        from myoquant.HE_analysis import run_he_analysis
         import numpy as np
         from PIL import Image
 

@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
 from skimage.draw import line
-from .common_func import (
+from myoquant.common_func import (
     extract_single_image,
     df_from_cellpose_mask,
     df_from_stardist_mask,
 )
-from .draw_line import (
+from myoquant.draw_line import (
     line_equation,
     calculate_intersection,
     calculate_closest_point,

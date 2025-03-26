@@ -1,7 +1,7 @@
 import pandas as pd
 from scipy.stats import gaussian_kde
 from sklearn.mixture import GaussianMixture
-from .common_func import extract_single_image, df_from_cellpose_mask
+from myoquant.common_func import extract_single_image, df_from_cellpose_mask
 import numpy as np
 import matplotlib
 

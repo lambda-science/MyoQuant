@@ -8,8 +8,8 @@ __version_stardist__ = pkg_resources.get_distribution("stardist").version
 __version_torch__ = pkg_resources.get_distribution("torch").version
 __version_tensorflow__ = pkg_resources.get_distribution("tensorflow").version
 
-from .commands.docs import app as docs_app
-from .commands import run_sdh, run_he, run_atp
+from myoquant.commands.docs import app as docs_app
+from myoquant.commands import run_sdh, run_he, run_atp
 
 console = Console()
 
@@ -30,6 +30,11 @@ app = typer.Typer(
 )
 app.add_typer(docs_app, name="docs", help="Generate documentation")
 
+app.registered_commands += (
+        run_sdh.app.registered_commands
+        + run_he.app.registered_commands
+        + run_atp.app.registered_commands
+)
 
 @app.callback()
 def main(
@@ -40,13 +45,6 @@ def main(
     """
     MyoQuant Analysis Command Line Interface
     """
-
-
-app.registered_commands += (
-    run_sdh.app.registered_commands
-    + run_he.app.registered_commands
-    + run_atp.app.registered_commands
-)
 
 if __name__ == "__main__":
     app()

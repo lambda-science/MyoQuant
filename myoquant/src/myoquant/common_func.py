@@ -13,15 +13,14 @@ import tensorflow as tf
 from cellpose.models import Cellpose
 from csbdeep.utils import normalize
 from stardist.models import StarDist2D
-from tensorflow import keras
 import numpy as np
 from PIL import Image
 from skimage.measure import regionprops_table
 from skimage.morphology import binary_erosion
 import pandas as pd
+import keras
+# from myoquant.gradcam import make_gradcam_heatmap, save_and_display_gradcam
 
-# from .gradcam import make_gradcam_heatmap, save_and_display_gradcam
-from .random_brightness import RandomBrightness
 
 import imageio
 
@@ -93,7 +92,7 @@ def load_sdh_model(model_path: str):
         Keras model instance: tensorflow keras model
     """
     model_sdh = keras.models.load_model(
-        model_path, custom_objects={"RandomBrightness": RandomBrightness}
+        model_path, custom_objects={"RandomBrightness": keras.layers.RandomBrightness(factor=0.2)}
     )
     return model_sdh
 
