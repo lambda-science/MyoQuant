@@ -81,7 +81,7 @@ For ATP Staining analysis, you can download this sample image: [HERE](https://ww
 
 ### Model path and manual download
 
-For the SDH Analysis our custom model will be downloaded and placed inside the myoquant package directory. You can also download it manually here: [https://lbgi.fr/~meyer/SDH_models/model.h5](https://lbgi.fr/~meyer/SDH_models/model.h5) and then you can place it in the directory of your choice and provide the path to the model file using:  
+For the SDH Analysis our custom model will be downloaded and placed inside the myoquant package directory. You can also download it manually here: [https://huggingface.co/corentinm7/MyoQuant-SDH-Model/resolve/main/model.h5](https://huggingface.co/corentinm7/MyoQuant-SDH-Model/resolve/main/model.h5) and then you can place it in the directory of your choice and provide the path to the model file using:  
 `myoquant sdh-analysis IMAGE_PATH --model_path /path/to/model.h5`
 
 ### HuggingFace🤗 repositories for Data and Model

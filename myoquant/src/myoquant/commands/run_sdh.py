@@ -112,7 +112,7 @@ def sdh_analysis(
             ) as progress:
                 progress.add_task(description="Downloading SDH Model...", total=None)
                 urllib.request.urlretrieve(
-                    "https://lbgi.fr/~meyer/SDH_models/model.h5",
+                    "https://huggingface.co/corentinm7/MyoQuant-SDH-Model/resolve/main/model.h5",
                     model_path_abs,
                 )
         model_path = model_path_abs
