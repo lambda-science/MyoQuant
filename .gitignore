@@ -173,3 +173,4 @@ data/*
 cellpose.sh
 nohup.out
 */.venv
+*/DS_Store
