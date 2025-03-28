@@ -24,7 +24,13 @@ dependencies = [
     "rich>=13.9.4",
     "seaborn>=0.13.2",
     "scikit-learn>=1.6.1",
-    "textual>=2.1.2"
+    "textual>=2.1.2",
+    "streamlit>=1.44.0",
+    "pyngrok>=5.2.3",
+    "matplotlib>=3.9.4",
+    "ipykernel>=6.29.5",
+    "pillow>=11.1.0",
+    "tifffile>=2025.3.13",
 ]
 
 [project.scripts]
