@@ -25,7 +25,8 @@ tags:
   - myopathy
   - SDH
   - myoquant
-preload_from_hub: corentinm7/MyoQuant-SDH-Model
+preload_from_hub:
+  - corentinm7/MyoQuant-SDH-Model
 ---
 
 ![Twitter Follow](https://img.shields.io/twitter/follow/corentinm_py?style=social) ![PyPi](https://img.shields.io/badge/PyPi-https%3A%2F%2Fpypi.org%2Fproject%2Fmyoquant%2F-blueviolet) ![Pypi verison](https://img.shields.io/pypi/v/myoquant)
