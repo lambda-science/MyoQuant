@@ -10,8 +10,10 @@ python_version: 3.12.11
 pinned: true
 header: mini
 short_description: Quantify pathological features in histology images
-models: corentinm7/MyoQuant-SDH-Model
-datasets: corentinm7/MyoQuant-SDH-Data
+models: 
+  - corentinm7/MyoQuant-SDH-Model
+datasets: 
+  - corentinm7/MyoQuant-SDH-Data
 tags:
   - streamlit
   - myology
