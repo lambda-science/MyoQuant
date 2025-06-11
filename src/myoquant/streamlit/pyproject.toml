@@ -5,7 +5,7 @@ description = ""
 readme = "README.md"
 requires-python = "<3.13, >=3.12"
 dependencies = [
-    "myoquant>=0.3.8",
+    "myoquant>=0.3.9",
     "streamlit",
     "pandas",
     "numpy",
