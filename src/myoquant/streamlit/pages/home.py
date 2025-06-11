@@ -7,7 +7,7 @@ st.sidebar.success("Select the corresponding staining analysis above.")
 
 st.markdown(
     """
-## MyoQuant-Streamlit🔬 is a demo web interface to showcase the usage of [MyoQuant](https://github.com/lambda-science/MyoQuant). 
+### MyoQuant-Streamlit🔬 is a demo web interface to showcase the usage of [MyoQuant](https://github.com/lambda-science/MyoQuant). 
 
 ![MyoQuant Banner](https://i.imgur.com/mzALgZL.png)
 ![MyoQuant Illustration](https://i.imgur.com/FxpFUT3.png)
@@ -22,7 +22,7 @@ Once on the demo, click on the corresponding staining analysis on the sidebar, a
 For all analysis you can press the "Load Default File" to load a sample image to try the tool.
 
 ## Contact
-Creator and Maintainer: [**Corentin Meyer**, PhD](https://cmeyer.fr/)  <corentin.meyer@etu.unistra.fr>  
+Creator and Maintainer: [**Corentin Meyer**, PhD](https://cmeyer.fr/)  <contact@cmeyer.fr>  
 The source code for MyoQuant is available [HERE](https://github.com/lambda-science/MyoQuant).  
 
 ## Partners

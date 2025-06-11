@@ -121,8 +121,8 @@ st.write(
 )
 
 
-default_file_url_3 = "https://raw.githubusercontent.com/lambda-science/MyoQuant/refs/heads/main/sample_img/cytoplasmes.tif"
-default_file_url_4 = "https://raw.githubusercontent.com/lambda-science/MyoQuant/refs/heads/main/sample_img/noyaux.tif"
+default_file_url_3 = "https://github.com/lambda-science/MyoQuant/raw/refs/heads/main/sample_img/cytoplasm.tif"
+default_file_url_4 = "https://github.com/lambda-science/MyoQuant/raw/refs/heads/main/sample_img/nuclei.tif"
 
 st.write(
     "Upload your singles channels images (cytoplasme images and nuclei image) OR click the Load Default File button !"
