@@ -1,6 +1,6 @@
 [project]
 name = "myoquant"
-version = "0.3.10"
+version = "0.3.11"
 description = "MyoQuant🔬: a tool to automatically quantify pathological features in muscle fiber histology images."
 authors = [{name="Corentin Meyer", email="contact@cmeyer.fr"}]
 maintainers = [{name="Corentin Meyer", email="contact@cmeyer.fr"}]
