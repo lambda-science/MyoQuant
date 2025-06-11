@@ -35,16 +35,6 @@ def sdh_analysis(
         readable=True,
         resolve_path=True,
     ),
-    model_path: Path = typer.Option(
-        None,
-        help="The SDH model path to use for analysis. Will download latest one if no path provided.",
-        exists=True,
-        file_okay=True,
-        dir_okay=False,
-        writable=False,
-        readable=True,
-        resolve_path=True,
-    ),
     cellpose_path: Path = typer.Option(
         None,
         help="The pre-computed CellPose mask to use for analysis. Will run Cellpose if no path provided. Required as an image file.",
@@ -92,31 +82,7 @@ def sdh_analysis(
 
     if mask_path is not None:
         console.print(f"📄 INPUT: binary mask: {mask_path}", style="blue")
-    import os
-
-    # If the model path is not provided, download latest version or check existence.
-    if model_path is None:
-        import urllib.request
-
-        console.print(
-            "💡 INFO: No SDH model provided, will download or use latest one.",
-            style="blue",
-        )
-        model_path_abs = Path(os.path.abspath(__file__)).parents[0] / "model.h5"
-        if not os.path.exists(model_path_abs):
-            with Progress(
-                SpinnerColumn(),
-                TextColumn("[progress.description]{task.description}"),
-                TimeElapsedColumn(),
-                transient=False,
-            ) as progress:
-                progress.add_task(description="Downloading SDH Model...", total=None)
-                urllib.request.urlretrieve(
-                    "https://huggingface.co/corentinm7/MyoQuant-SDH-Model/resolve/main/model.h5",
-                    model_path_abs,
-                )
-        model_path = model_path_abs
-    console.print(f"📄 INPUT: SDH Model: {model_path}", style="blue")
+    console.print(f"📄 INPUT: SDH Model: from HuggingFace corentinm7/MyoQuant-SDH-Model", style="blue")
 
     # Import all modules
     with Progress(
@@ -217,7 +183,7 @@ def sdh_analysis(
             total=None,
         )
         with HiddenPrints():
-            model_SDH = load_sdh_model(model_path)
+            model_SDH = load_sdh_model()
 
     # If binary mask provided, mask cellpose mask
     if mask_path is not None:

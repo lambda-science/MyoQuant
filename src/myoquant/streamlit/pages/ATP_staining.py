@@ -10,7 +10,6 @@ try:
 except:
     from imageio import imread
 import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
 from myoquant.common_func import (
     load_cellpose,
@@ -164,7 +163,7 @@ if uploaded_file_atp is not None:
     for index, elem in enumerate(count_per_label[0]):
         st.write(
             "Number of cells classified as ",
-            labels_predict[int(elem)],
+            labels_predict[int(elem)+1],
             ": ",
             count_per_label[1][int(index)],
             " ",

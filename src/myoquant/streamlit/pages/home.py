@@ -22,7 +22,7 @@ Once on the demo, click on the corresponding staining analysis on the sidebar, a
 For all analysis you can press the "Load Default File" to load a sample image to try the tool.
 
 ## Contact
-Creator and Maintainer: [**Corentin Meyer**, 3rd year PhD Student in the CSTB Team, ICube — CNRS — Unistra](https://lambda-science.github.io/)  <corentin.meyer@etu.unistra.fr>  
+Creator and Maintainer: [**Corentin Meyer**, PhD](https://cmeyer.fr/)  <corentin.meyer@etu.unistra.fr>  
 The source code for MyoQuant is available [HERE](https://github.com/lambda-science/MyoQuant).  
 
 ## Partners

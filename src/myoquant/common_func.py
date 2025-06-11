@@ -82,28 +82,15 @@ def load_stardist(fluo=False):
     return model_s
 
 
-def load_sdh_model(model_path: str):
+def load_sdh_model():
     """Load and return the SDH model
-
-    Args:
-        model_path (str): path to the SDH model
 
     Returns:
         Keras model instance: tensorflow keras model
     """
     # Load the model without compiling to avoid issues with 'reduction=auto' in Keras 3
-    model_sdh = keras.models.load_model(
-        model_path, 
-        custom_objects={"RandomBrightness": keras.layers.RandomBrightness(factor=0.2)},
-        compile=False
-    )
-
-    # Recompile the model with valid parameters for Keras 3
-    # You may need to adjust the optimizer, loss, and metrics based on your original model
-    model_sdh.compile(
-        optimizer='adam',
-        loss='categorical_crossentropy',
-        metrics=['accuracy']
+    model_sdh = keras.saving.load_model(
+        "hf://corentinm7/MyoQuant-SDH-Model"
     )
 
     return model_sdh
@@ -123,9 +110,10 @@ def run_cellpose(image, model_cellpose, diameter=None):
     """
     channel = [[0, 0]]
     with torch.no_grad():
-        mask_cellpose, _, _, _ = model_cellpose.eval(
+        tuple_result = model_cellpose.eval(
             image, diameter=diameter, channels=channel
         )
+        mask_cellpose = tuple_result[0]
         return mask_cellpose
 
 

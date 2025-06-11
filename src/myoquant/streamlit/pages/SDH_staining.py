@@ -33,8 +33,8 @@ use_GPU = is_gpu_availiable()
 
 
 @st.cache_resource
-def st_load_sdh_model(model_path):
-    return load_sdh_model(model_path)
+def st_load_sdh_model():
+    return load_sdh_model()
 
 
 @st.cache_resource
@@ -78,19 +78,13 @@ tf.random.set_seed(42)
 np.random.seed(42)
 
 
-if path.exists("model.h5"):
-    st.success("SDH Model ready to use !")
-    pass
-else:
-    with st.spinner("Please wait we are downloading the SDH Model."):
-        urllib.request.urlretrieve(
-            "https://lbgi.fr/~meyer/SDH_models/model.h5", "model.h5"
-        )
-    st.success("SDH Model have been downloaded !")
+
+with st.spinner("Please wait we are loading the SDH Model."):
+    model_SDH = st_load_sdh_model()
+
+st.success("SDH Model have been downloaded !")
 
 model_cellpose = st_load_cellpose()
-
-model_SDH = st_load_sdh_model("model.h5")
 
 st.title("SDH Staining Analysis")
 st.write(

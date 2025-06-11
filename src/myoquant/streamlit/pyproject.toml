@@ -1,0 +1,15 @@
+[project]
+name = "myoquant-streamlit"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = "<3.13, >=3.12"
+dependencies = [
+    "myoquant>=0.3.8",
+    "streamlit",
+    "pandas",
+    "numpy",
+    "imageio",
+    "matplotlib",
+    "requests",
+]

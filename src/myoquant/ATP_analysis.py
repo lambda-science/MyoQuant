@@ -74,6 +74,8 @@ def plot_density(all_cell_median_intensity, intensity_threshold, n_classes=2):
         all_cell_median_intensity, bins=255, density=True, alpha=0.5, label="Histogram"
     )
     ax.plot(xs, density_xs_values, label="Estimated Density", linewidth=3)
+    if isinstance(intensity_threshold, int):
+        intensity_threshold = [intensity_threshold]
     for values in intensity_threshold:
         ax.axvline(x=values, color="red", label="Threshold")
     ax.set_xlabel("Pixel Intensity")
@@ -89,6 +91,8 @@ def merge_peaks_too_close(peak_list):
 def classify_cells_intensity(all_cell_median_intensity, intensity_threshold):
     muscle_fiber_type_all = []
     for intensity in all_cell_median_intensity:
+        if isinstance(intensity_threshold, int):
+            intensity_threshold = [intensity_threshold]
         class_cell = np.searchsorted(intensity_threshold, intensity, side="right")
         muscle_fiber_type_all.append(class_cell)
     return muscle_fiber_type_all

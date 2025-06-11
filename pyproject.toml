@@ -1,6 +1,6 @@
 [project]
 name = "myoquant"
-version = "0.3.5"
+version = "0.3.8"
 description = "MyoQuant🔬: a tool to automatically quantify pathological features in muscle fiber histology images."
 authors = [{name="Corentin Meyer", email="contact@cmeyer.fr"}]
 maintainers = [{name="Corentin Meyer", email="contact@cmeyer.fr"}]
@@ -13,9 +13,9 @@ requires-python = "<3.13, >=3.10"
 dependencies = [
     "tensorflow>=2.19.0",
     "keras>=3.9.0",
-    "cellpose>=3.1.1.1",
+    "cellpose<4.0.0",
     "stardist>=0.9.1",
-    "numpy<=2.1.0",
+    "numpy<2.0.0",
     "csbdeep>=0.8.1",
     "imageio>=2.37.0",
     "scikit-image>=0.25.2",
@@ -31,6 +31,7 @@ dependencies = [
     "ipykernel>=6.29.5",
     "pillow>=11.1.0",
     "tifffile>=2025.3.13",
+    "huggingface-hub>=0.32.4",
 ]
 
 [project.scripts]
@@ -45,6 +46,7 @@ dev-dependencies = [
     "pre-commit",
     "mkdocstrings",
     "mypy",
+    "tensorflow-metal>=1.2.0",
 ]
 
 [project.urls]

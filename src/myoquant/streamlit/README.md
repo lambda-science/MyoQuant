@@ -1,16 +1,32 @@
 ---
-title: MyoQuant Streamlit
+title: MyoQuant-Streamlit🔬
 emoji: 🔬
 colorFrom: yellow
 colorTo: purple
-sdk: streamlit
-sdk_version: 1.19.0
-app_file: run.py
+sdk: docker
+app_port: 8501
 license: agpl-3.0
-python: 3.10.9
+python_version: 3.12.11
+pinned: true
+header: mini
+short_description: Quantify pathological features in histology images
+models: corentinm7/MyoQuant-SDH-Model
+datasets: corentinm7/MyoQuant-SDH-Data
+tags:
+  - streamlit
+  - myology
+  - biology
+  - histology
+  - muscle
+  - cells
+  - fibers
+  - myopathy
+  - SDH
+  - myoquant
+preload_from_hub: corentinm7/MyoQuant-SDH-Model
 ---
 
-![Twitter Follow](https://img.shields.io/twitter/follow/corentinm_py?style=social) ![Demo Version](https://img.shields.io/badge/Demo-https%3A%2F%2Flbgi.fr%2FMyoQuant%2F-9cf) ![PyPi](https://img.shields.io/badge/PyPi-https%3A%2F%2Fpypi.org%2Fproject%2Fmyoquant%2F-blueviolet) ![Pypi verison](https://img.shields.io/pypi/v/myoquant)
+![Twitter Follow](https://img.shields.io/twitter/follow/corentinm_py?style=social) ![PyPi](https://img.shields.io/badge/PyPi-https%3A%2F%2Fpypi.org%2Fproject%2Fmyoquant%2F-blueviolet) ![Pypi verison](https://img.shields.io/pypi/v/myoquant)
 
 # MyoQuant-Streamlit🔬: a demo web interface for the MyoQuant tool.
 
@@ -32,31 +48,20 @@ This web application is intended for demonstration purposes only.
 
 ## How to install or deploy the interface
 
-The demo version is deployed at https://lbgi.fr/MyoQuant/. You can deploy your own demo version using Docker, your own python environment or google Colab for GPU support.
+The demo version is deployed at [https://huggingface.co/spaces/corentinm7/MyoQuant](https://huggingface.co/spaces/corentinm7/MyoQuant). You can deploy your own demo version using Docker or your own python environment.
 
 ### Docker
 
-You can build the docker image by running `docker build -t streamlit .` and launch the container using `docker run -p 8501:8501 streamlit`.
+You can build & run the docker image by running `docker build -t myostreamlit:latest . && docker run -p 8501:8501 myostreamlit:latest`
 
 ### Non-Docker
 
-If you do not want to use Docker you can install the poetry package in a miniconda (python 3.9, 3.10) base env, run `poetry install` to install the python env, activate the env with `poetry shell` and launch the app by running `streamlit run run.py`.
-
-### Deploy on Google Colab for GPU
-
-As this application uses various deep-learning model, you could benefit from using a deployment solution that provides a GPU.  
-To do so, you can leverage Google Colab free GPU to boost this Streamlit application.  
-To run this app on Google Colab, simply clone the notebook called `google_colab_deploy.ipynb` into Colab and run the four cells. It will automatically download the latest code version, install dependencies and run the app. A link will appear in the output of the lat cell with a structure like `https://word1-word2-try-01-234-567-890.loca.lt`. Click it and the click continue and you’re ready to use the app!
+If you do not want to use Docker you can install package using for example [UV](https://github.com/astral-sh/uv). Run `uv sync` to create the python environnement and then run: `uv run streamlit run src/myoquant/streamlit/run.py` or `uv run streamlit run run.py` if you only clone the HuggingFace space repository and not the full MyoQuant package.
 
 ## How to Use
 
 Once on the demo, click on the corresponding staining analysis on the sidebar, and upload your histology image. Results will be displayed in the main area automatically.  
 For all analysis you can press the "Load Default File" to load a sample image to try the tool.
-
-## Troubleshooting
-
-If you have an error like `libcublas.so[0-9] cannot be found`
-It probably means that there is a weird CUDA on CPU-only hardware installation error. Try `pip remove torch` and `pip install torch --index-url https://download.pytorch.org/whl/cpu`, in your python virtual env. It should do the trick.
 
 ## Contact
 

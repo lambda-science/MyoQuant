@@ -27,30 +27,29 @@ An online demo with a web interface is available at [https://lbgi.fr/MyoQuant/](
 Using pip, you can simply install MyoQuant in a python environment with a simple: `pip install myoquant`
 
 ### Installing from sources (Developers)
-
+I recommend using UV for python environment management. See [UV documentation](https://github.com/astral-sh/uv/).
 1. Clone this repository using `git clone https://github.com/lambda-science/MyoQuant.git`
-2. Create a virtual environment by using `python -m venv .venv`
-3. Activate the venv by using `source .venv/bin/activate`
-4. Install MyoQuant by using `pip install -e .`
+2. Create a virtual environment by using `uv sync`
+3. Run Myoquant with `uv run myoquant --help`
 
 ## How to Use
 
-To use the command-line tool, first activate your venv in which MyoQuant is installed: `source .venv/bin/activate`  
-Then you can perform SDH or HE analysis. You can use the command `myoquant --help` to list available commands.
+To use the command-line tool, first activate your venv in which MyoQuant is installed: `source .venv/bin/activate` or simply install the package using UV.  
+Then you can perform SDH or HE analysis. You can use the command `myoquant --help` or `uv run myoquant --help` to list available commands.
 
-## 💡Full command documentation is avaliable here: [CLI Documentation](https://github.com/lambda-science/MyoQuant/blob/main/CLI_Documentation.md)
+## 💡Full command documentation is available here: [CLI Documentation](https://github.com/lambda-science/MyoQuant/blob/main/CLI_Documentation.md)
 
 - **For SDH Image Analysis** the command is:  
   `myoquant sdh-analysis IMAGE_PATH`  
   Don't forget to run `myoquant sdh-analysis --help` for information about options.
 - **For HE Image Analysis** the command is:  
   `myoquant he-analysis IMAGE_PATH`  
-   Don't forget to run `myoquant he-analysis --help` for information about options.
+  Don't forget to run `myoquant he-analysis --help` for information about options.
 - **For ATP Image Analysis** the command is:  
   `myoquant atp-analysis IMAGE_PATH`  
-   Don't forget to run `myoquant atp-analysis --help` for information about options.
+  Don't forget to run `myoquant atp-analysis --help` for information about options.
 
-_If you're running into an issue such as `myoquant: command not found` please check if you activated your virtual environment with the package installed. And also you can try to run it with the full command: `python -m myoquant sdh-analysis --help`_
+_If you're running into an issue such as `myoquant: command not found` please check if you activated your virtual environment with the package installed. And also you can try to run it with the full command: `python -m myoquant sdh-analysis --help` or `uv run myoquant sdh-analysis --help`  
 
 ## Contact
 
@@ -78,11 +77,6 @@ For ATP Staining analysis, you can download this sample image: [HERE](https://ww
 ![image](https://i.imgur.com/2ceiOx8.png)
 
 ## Advanced information
-
-### Model path and manual download
-
-For the SDH Analysis our custom model will be downloaded and placed inside the myoquant package directory. You can also download it manually here: [https://huggingface.co/corentinm7/MyoQuant-SDH-Model/resolve/main/model.h5](https://huggingface.co/corentinm7/MyoQuant-SDH-Model/resolve/main/model.h5) and then you can place it in the directory of your choice and provide the path to the model file using:  
-`myoquant sdh-analysis IMAGE_PATH --model_path /path/to/model.h5`
 
 ### HuggingFace🤗 repositories for Data and Model
 

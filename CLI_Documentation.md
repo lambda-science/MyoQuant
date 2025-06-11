@@ -141,7 +141,6 @@ $ myoquant sdh-analysis [OPTIONS] IMAGE_PATH
 **Options**:
 
 - `--mask-path FILE`: The path to a binary mask to hide slide region during analysis. It needs to be of the same resolution as input image and only pixel marked as 1 will be analyzed.
-- `--model-path FILE`: The SDH model path to use for analysis. Will download latest one if no path provided.
 - `--cellpose-path FILE`: The pre-computed CellPose mask to use for analysis. Will run Cellpose if no path provided. Required as an image file.
 - `--output-path PATH`: The path to the folder to save the results. Will save in the current folder if not specified.
 - `--cellpose-diameter INTEGER`: Approximative single cell diameter in pixel for CellPose detection. If not specified, Cellpose will try to deduce it.
