@@ -32,6 +32,13 @@ I recommend using UV for python environment management. See [UV documentation](h
 2. Create a virtual environment by using `uv sync`
 3. Run Myoquant with `uv run myoquant --help`
 
+## Run Local Demo Instance
+You can run the local streamlit private demo instance by running the following command:
+
+`uv run streamlit run src/myoquant/streamlit/run.py`
+
+And access: [ http://localhost:8501](http://localhost:8501)
+
 ## How to Use
 
 #### **🆕 NEW:** MyoQuant now comes with a Text User Interface (TUI) for an easier discoverability of the different CLI parameter. **For this you can run `myoquant tui` or `uv run myoquant tui` to launch the TUI.**
@@ -53,7 +60,7 @@ Then you can perform SDH or HE analysis. You can use the command `myoquant --hel
   `myoquant atp-analysis IMAGE_PATH`  
   Don't forget to run `myoquant atp-analysis --help` for information about options.
 
-_If you're running into an issue such as `myoquant: command not found` please check if you activated your virtual environment with the package installed. And also you can try to run it with the full command: `python -m myoquant sdh-analysis --help` or `uv run myoquant sdh-analysis --help`  
+_If you're running into an issue such as `myoquant: command not found` please check if you activated your virtual environment with the package installed. And also you can try to run it with the full command: `python -m myoquant sdh-analysis --help` or `uv run myoquant sdh-analysis --help`
 
 ## Contact
 
