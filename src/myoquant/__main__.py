@@ -8,6 +8,8 @@ __version_stardist__ = pkg_resources.get_distribution("stardist").version
 __version_torch__ = pkg_resources.get_distribution("torch").version
 __version_tensorflow__ = pkg_resources.get_distribution("tensorflow").version
 
+from trogon.typer import init_tui
+
 from myoquant.commands.docs import app as docs_app
 from myoquant.commands import run_sdh, run_he, run_atp
 
@@ -28,13 +30,18 @@ app = typer.Typer(
     help="MyoQuant Analysis Command Line Interface",
     pretty_exceptions_show_locals=False,
 )
-app.add_typer(docs_app, name="docs", help="Generate documentation")
+app.add_typer(run_sdh.app, help="SDH Analysis")
+app.add_typer(run_he.app, help="HE Analysis")
+app.add_typer(run_atp.app, help="ATP Analysis")
+app.add_typer(docs_app, help="Generate documentation")
 
 app.registered_commands += (
         run_sdh.app.registered_commands
         + run_he.app.registered_commands
         + run_atp.app.registered_commands
 )
+
+app = init_tui(app)
 
 @app.callback()
 def main(

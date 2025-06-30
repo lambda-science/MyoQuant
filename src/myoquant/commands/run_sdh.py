@@ -59,11 +59,11 @@ def sdh_analysis(
     ),
     export_stats: bool = typer.Option(True, help="Export per fiber stat table."),
 ):
-    """Run the mitochondiral analysis and quantification on the image.
+    """Run the mitochondrial analysis and quantification on the image.
     First input arguments and option are printed in stdout and all modules are imported and latest SDH model is downloaded.
     Then the input image is mask with the binary mask if provided.
     Then depending on the presence of cellpose path, Cellpose is run or not and mask accordingly if binary mask is provided.
-    Finally the mitochondiral classificaiton is run with run_sdh_analysis() function and the results are saved in the output folder and some info are printed in stdout.
+    Finally, the mitochondrial classification is run with run_sdh_analysis() function and the results are saved in the output folder and some info are printed in stdout.
     """
     start_time = time.time()
     console.print(

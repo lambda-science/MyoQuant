@@ -96,7 +96,7 @@ def atp_analysis(
     """Run the fibre type 1 vs type 2 analysis on ATP images.
     First input arguments and option are printed in stdout and all modules are imported. Then the input image is mask with the binary mask if provided.
     Then depending on the presence of cellpose , Cellpose is run or not and mask accordingly if binary mask is provided.
-    Finally the ATP analysis is run with run_atp_analysis() function and the results are saved in the output folder and some info are printed in stdout.
+    Finally, the ATP analysis is run with run_atp_analysis() function and the results are saved in the output folder and some info are printed in stdout.
     """
     start_time = time.time()
     console.print(

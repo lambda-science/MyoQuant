@@ -94,7 +94,7 @@ def get_docs_for_click(
 
 
 @app.command(help="Generate markdown version of usage documentation")
-def generate(
+def generate_docs(
     ctx: typer.Context,
     name: str = typer.Option("", help="The name of the CLI program to use in docs."),
     output: Path = typer.Option(

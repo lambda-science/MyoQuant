@@ -1,5 +1,5 @@
 ---
-title: MyoQuant-Streamlit🔬
+title: MyoQuant-Streamlit
 emoji: 🔬
 colorFrom: yellow
 colorTo: purple

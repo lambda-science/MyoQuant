@@ -96,7 +96,7 @@ def he_analysis(
     """Run the nuclei position analysis on HE and fluo images.
     First input arguments and option are printed in stdout and all modules are imported. Then the input image is mask with the binary mask if provided.
     Then depending on the presence of cellpose and stardist path, Cellpose and Stardist are run or not and mask accordingly if binary mask is provided.
-    Finally the nuclei analysis is run with run_he_analysis() function and the results are saved in the output folder and some info are printed in stdout.
+    Finally, the nuclei analysis is run with run_he_analysis() function and the results are saved in the output folder and some info are printed in stdout.
     """
     start_time = time.time()
     console.print(

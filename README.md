@@ -34,6 +34,10 @@ I recommend using UV for python environment management. See [UV documentation](h
 
 ## How to Use
 
+#### **🆕 NEW:** MyoQuant now comes with a Text User Interface (TUI) for an easier discoverability of the different CLI parameter. **For this you can run `myoquant tui` or `uv run myoquant tui` to launch the TUI.**
+
+![img.png](static/tui.png)
+
 To use the command-line tool, first activate your venv in which MyoQuant is installed: `source .venv/bin/activate` or simply install the package using UV.  
 Then you can perform SDH or HE analysis. You can use the command `myoquant --help` or `uv run myoquant --help` to list available commands.
 
@@ -66,9 +70,10 @@ For SDH Staining analysis, you can download this sample image: [HERE](https://ww
 For ATP Staining analysis, you can download this sample image: [HERE](https://www.lbgi.fr/~meyer/SDH_models/sample_atp.jpg)
 
 1. Example of successful SDH analysis output with: `myoquant sdh-analysis sample_sdh.jpg`
+![img.png](static/sdh_cli.png)
+![image](https://i.imgur.com/4Nlnwdx.png)
 
-![image](https://user-images.githubusercontent.com/20109584/210328050-11b0b6d5-28ec-41a4-b9d3-264962d04fa3.png)
-![image](https://i.imgur.com/4Nlnwdx.png) 2. Example of HE analysis: `myoquant he-analysis sample_he.jpg`
+2. Example of HE analysis: `myoquant he-analysis sample_he.jpg`
 
 ![image](https://i.imgur.com/q2cXgIf.png)
 
